@@ -21,8 +21,8 @@ class ManejadorEnviarMensaje {
    * @returns {Promise<string>} Respuesta de la IA
    */
   async ejecutar(comando) {
-    const analiticas = this.proveedorContexto.obtenerAnaliticas();
-    const muestras   = this.proveedorContexto.obtenerMuestraPracticas(10);
+    const analiticas = await this.proveedorContexto.obtenerAnaliticas();
+    const muestras   = await this.proveedorContexto.obtenerMuestraPracticas(10);
 
     const promptSistema = this._construirPromptSistema(analiticas, muestras);
 
