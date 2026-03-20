@@ -19,17 +19,17 @@ class ProveedorContextoObservatorio extends ProveedorContexto {
     this.repositorioPracticas = repositorioPracticas;
   }
 
-  obtenerAnaliticas() {
-    return this.manejadorDashboard.ejecutar();
+  async obtenerAnaliticas() {
+    return await this.manejadorDashboard.ejecutar();
   }
 
-  obtenerMuestraPracticas(cantidad = 10) {
+  async obtenerMuestraPracticas(cantidad = 10) {
     const consulta = {
       busqueda: '', departamento: '', tipo: '', formacion: '',
       pagina: 1, tamanioPagina: cantidad,
       campoOrden: 'institucion', direccionOrden: 'ASC', idCarga: null,
     };
-    const { registros } = this.repositorioPracticas.buscarTodas(consulta);
+    const { registros } = await this.repositorioPracticas.buscarTodas(consulta);
     return registros;
   }
 }

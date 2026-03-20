@@ -30,19 +30,13 @@ async function iniciar() {
   app.use(cors());
   app.use(express.json());
 
-  /* ── Archivos estáticos del frontend (build de producción) ── */
-  app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+  // El frontend ahora está desplegado de manera independiente (Static Site en Render).
 
   /* ── Rutas de la API ── */
   app.use('/api/practices', controladorPracticas);
   app.use('/api/uploads',   controladorCargas);
   app.use('/api/analytics', controladorAnaliticas);
   app.use('/api/chat',      controladorChat);
-
-  /* ── SPA fallback: cualquier ruta no-API sirve el frontend ── */
-  app.get(/^(?!\/api).*/, (_req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
-  });
 
   app.use(manejadorErrores);
 
