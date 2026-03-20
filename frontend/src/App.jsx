@@ -77,7 +77,7 @@ export default function App() {
           </nav>
 
           <a
-            href="/vista-publica"
+            href="/"
             target="_blank"
             rel="noopener noreferrer"
             className="nav-btn"
