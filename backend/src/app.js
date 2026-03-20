@@ -17,6 +17,7 @@ async function iniciar() {
   console.log('✔ Base de datos inicializada');
 
   /* ── Controladores de cada slice ── */
+  const controladorAuth       = require('./auth/infraestructura/ControladorAuth');
   const controladorPracticas  = require('./practicas/infraestructura/ControladorPracticas');
   const controladorCargas     = require('./cargas/infraestructura/ControladorCargas');
   const controladorAnaliticas = require('./analiticas/infraestructura/ControladorAnaliticas');
@@ -33,6 +34,7 @@ async function iniciar() {
   // El frontend ahora está desplegado de manera independiente (Static Site en Render).
 
   /* ── Rutas de la API ── */
+  app.use('/api/auth',      controladorAuth);
   app.use('/api/practices', controladorPracticas);
   app.use('/api/uploads',   controladorCargas);
   app.use('/api/analytics', controladorAnaliticas);

@@ -20,7 +20,7 @@ const NAVEGACION = [
   { id: 'historico',   label: 'Histórico',              icon: '🕐' },
 ];
 
-export default function App() {
+export default function App({ onLogout }) {
   const [tab, setTab] = useState('dashboard');
   const [totalPracticas, setTotalPracticas] = useState('—');
   const [idCargaFiltro, setIdCargaFiltro] = useState(undefined);
@@ -90,10 +90,25 @@ export default function App() {
           <div className="sidebar-footer">
             <div className="sidebar-footer-avatar">UPN</div>
             <div className="sidebar-footer-info">
-              UPN Colombia
-              <small>Admin</small>
+              {localStorage.getItem('observatorio_usuario') || 'Admin'}
+              <small>Administrador</small>
             </div>
           </div>
+          <button
+            onClick={onLogout}
+            style={{
+              margin: '8px 12px 12px', padding: '0.6rem 1rem',
+              background: 'rgba(239,68,68,0.12)', color: '#ef4444',
+              border: '1px solid rgba(239,68,68,0.3)', borderRadius: '10px',
+              cursor: 'pointer', fontWeight: 600, fontSize: '0.82rem',
+              width: 'calc(100% - 24px)', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', gap: '0.4rem', transition: 'background 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.22)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'rgba(239,68,68,0.12)'}
+          >
+            🚪 Cerrar Sesión
+          </button>
         </aside>
 
         {/* ── Contenido principal ── */}
