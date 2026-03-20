@@ -52,7 +52,8 @@ function AdminRoute() {
   );
 }
 
-const esAdmin = window.location.pathname.startsWith('/admin');
+const esAdmin = new URLSearchParams(window.location.search).has('admin')
+  || localStorage.getItem('observatorio_admin') === 'true';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
