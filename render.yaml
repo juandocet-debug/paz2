@@ -1,0 +1,29 @@
+services:
+  # ── BACKEND (Web Service API) ──
+  - type: web
+    name: observatorio-backend
+    env: node
+    buildCommand: "cd backend && npm install"
+    # Utilizamos 'npm start' porque en el package.json definimos el node src/app.js
+    startCommand: "cd backend && npm start"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+
+  # ── FRONTEND (Static Site) ──
+  - type: web
+    name: observatorio-frontend
+    env: static
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "./frontend/dist"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: observatorio-backend
+          envVarKey: RENDER_EXTERNAL_URL
+        # De esta forma, Render inyecta automáticamente la URL del backend al frontend

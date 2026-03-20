@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(node -e \"const db=require\\(''./src/config/database''\\); console.log\\(''DB OK, tables:'', db.prepare\\(\"\"SELECT name FROM sqlite_master WHERE type=''table''\"\"\\).all\\(\\).map\\(r=>r.name\\).join\\('', ''\\)\\)\")"
+    ]
+  }
+}
