@@ -13,6 +13,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
+import { BookOpen, Map, GraduationCap, FileText, Zap, Building2, MapPin, Clock, BarChart3 } from 'lucide-react';
 
 /* ── Constantes ── */
 const CENTRO_COLOMBIA = { lat: 4.5709, lng: -74.2973 };
@@ -363,7 +364,7 @@ export default function PaginaPublicacion() {
         {/* ── Top Bar ── */}
         <div className="vp-top-bar">
           <div className="vp-header-brand">
-            <div className="vp-logo">UPN</div>
+            <img src="https://i.ibb.co/mF0BbpnH/Identidad-UPN-25-vertical-azul-fondo-blanco-removebg-preview.png" alt="UPN" className="vp-logo" style={{ height: 48, width: 'auto', objectFit: 'contain' }} />
             <div className="vp-header-title">
               <h1>Observatorio de Prácticas</h1>
               <p>Paz, Memoria y Derechos Humanos — Colombia</p>
@@ -397,24 +398,32 @@ export default function PaginaPublicacion() {
             {/* ── KPIs destacados ── */}
             <section className="vp-kpis-top">
               <div className="vp-kpi vp-kpi-1">
-                <div className="vp-kpi-icon">📚</div>
-                <div className="vp-kpi-val">{(kpis.total || 0).toLocaleString()}</div>
-                <div className="vp-kpi-label">Prácticas Registradas</div>
+                <div className="vp-kpi-icon-box"><BookOpen size={24} /></div>
+                <div className="vp-kpi-content">
+                  <div className="vp-kpi-val">{(kpis.total || 0).toLocaleString()}</div>
+                  <div className="vp-kpi-label">Prácticas Registradas</div>
+                </div>
               </div>
               <div className="vp-kpi vp-kpi-2">
-                <div className="vp-kpi-icon">🗺️</div>
-                <div className="vp-kpi-val">{kpis.departamentos || 0}</div>
-                <div className="vp-kpi-label">Departamentos</div>
+                <div className="vp-kpi-icon-box"><Map size={24} /></div>
+                <div className="vp-kpi-content">
+                  <div className="vp-kpi-val">{kpis.departamentos || 0}</div>
+                  <div className="vp-kpi-label">Departamentos</div>
+                </div>
               </div>
               <div className="vp-kpi vp-kpi-3">
-                <div className="vp-kpi-icon">🎓</div>
-                <div className="vp-kpi-val">{kpis.conFormacion || 0}</div>
-                <div className="vp-kpi-label">Con Formación Docente</div>
+                <div className="vp-kpi-icon-box"><GraduationCap size={24} /></div>
+                <div className="vp-kpi-content">
+                  <div className="vp-kpi-val">{kpis.conFormacion || 0}</div>
+                  <div className="vp-kpi-label">Con Formación Docente</div>
+                </div>
               </div>
               <div className="vp-kpi vp-kpi-4">
-                <div className="vp-kpi-icon">📝</div>
-                <div className="vp-kpi-val">{kpis.conMateriales || 0}</div>
-                <div className="vp-kpi-label">Materiales Producidos</div>
+                <div className="vp-kpi-icon-box"><FileText size={24} /></div>
+                <div className="vp-kpi-content">
+                  <div className="vp-kpi-val">{kpis.conMateriales || 0}</div>
+                  <div className="vp-kpi-label">Materiales Producidos</div>
+                </div>
               </div>
             </section>
 
@@ -424,7 +433,9 @@ export default function PaginaPublicacion() {
               {/* Mapa — celda grande */}
               <div className="vp-bento-card vp-bento-mapa">
                 <div className="vp-bento-header">
-                  <span className="vp-bento-title">🗺 Distribución Geográfica</span>
+                  <span className="vp-bento-title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <MapPin size={16} color="#001B5E" /> Distribución Geográfica
+                  </span>
                   <span className="vp-bento-badge">{puntosMapa.length} puntos</span>
                 </div>
                 <div style={{ flex: 1, position: 'relative', minHeight: 0 }}>
@@ -437,7 +448,9 @@ export default function PaginaPublicacion() {
               {iaConflictos ? (
                 <div className="vp-bento-card vp-bento-conflictos" style={{ background: 'linear-gradient(135deg, #FFF7ED 0%, #FFF 100%)', borderColor: PALETA.naranja }}>
                   <div className="vp-bento-header" style={{ marginBottom: 8 }}>
-                    <span className="vp-bento-title" style={{ color: PALETA.naranja }}>⚡ Conflictos Identificados</span>
+                    <span className="vp-bento-title" style={{ color: PALETA.naranja, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Zap size={16} /> Conflictos Identificados
+                    </span>
                     <span className="vp-bento-badge" style={{ background: PALETA.naranja, color: 'white' }}>✨ IA</span>
                   </div>
                   <div style={{ display: 'flex', gap: '20px', flex: 1, alignItems: 'center' }}>
@@ -474,7 +487,9 @@ export default function PaginaPublicacion() {
               ) : (
                 <div className="vp-bento-card vp-bento-conflictos" style={{ display: 'flex', flexDirection: 'column' }}>
                   <div className="vp-bento-header">
-                    <span className="vp-bento-title" style={{ color: analizandoIA ? PALETA.naranja : 'inherit' }}>⚡ Conflictos Identificados</span>
+                    <span className="vp-bento-title" style={{ color: analizandoIA ? PALETA.naranja : 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Zap size={16} /> Conflictos Identificados
+                    </span>
                     {analizandoIA && <span className="vp-bento-badge" style={{ background: '#FFF7ED', color: PALETA.naranja }}>⏳ Analizando con IA...</span>}
                   </div>
                   <div style={{ display: 'flex', gap: '20px', flex: 1, alignItems: 'center' }}>
@@ -494,7 +509,9 @@ export default function PaginaPublicacion() {
               {/* Tipo institución — dona */}
               <div className="vp-bento-card">
                 <div className="vp-bento-header">
-                  <span className="vp-bento-title">🏛 Tipo de Institución</span>
+                  <span className="vp-bento-title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Building2 size={16} color="#001B5E" /> Tipo de Institución
+                  </span>
                 </div>
                 <GraficoDona datos={datos.porTipoInstitucion} height={180} />
               </div>
@@ -502,7 +519,9 @@ export default function PaginaPublicacion() {
               {/* Distribución por departamento */}
               <div className="vp-bento-card">
                 <div className="vp-bento-header">
-                  <span className="vp-bento-title">📍 Top Departamentos</span>
+                  <span className="vp-bento-title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <MapPin size={16} color="#001B5E" /> Top Departamentos
+                  </span>
                 </div>
                 <ListaProgreso datos={datos.porDepartamento} max={6} />
               </div>
@@ -565,7 +584,9 @@ export default function PaginaPublicacion() {
               ) : (
                 <div className="vp-bento-card vp-bento-wide" style={{ display: 'flex', flexDirection: 'column' }}>
                   <div className="vp-bento-header">
-                    <span className="vp-bento-title" style={{ color: analizandoIA ? PALETA.lila : 'inherit' }}>📜 Políticas Relacionadas</span>
+                    <span className="vp-bento-title" style={{ color: analizandoIA ? PALETA.lila : 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <FileText size={16} /> Políticas Relacionadas
+                    </span>
                     {analizandoIA && <span className="vp-bento-badge" style={{ background: '#F5F3FF', color: PALETA.lila }}>⏳ Analizando con IA...</span>}
                   </div>
                   <div style={{ display: 'flex', gap: '20px', flex: 1, alignItems: 'center' }}>
@@ -582,18 +603,13 @@ export default function PaginaPublicacion() {
                 </div>
               )}
 
-              {/* Lineamientos MEN — barras */}
-              <div className="vp-bento-card vp-bento-wide">
-                <div className="vp-bento-header">
-                  <span className="vp-bento-title">📊 Frecuencia de Lineamientos MEN</span>
-                </div>
-                <GraficoBarras datos={datos.porFrecuenciaLinea} height={130} />
-              </div>
 
               {/* Formación y materiales */}
               <div className="vp-bento-card vp-bento-stats">
                 <div className="vp-bento-header">
-                  <span className="vp-bento-title">🔬 Producción Académica</span>
+                  <span className="vp-bento-title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Zap size={16} color="#001B5E" /> Producción Académica
+                  </span>
                 </div>
                 <div className="vp-stats-row">
                   {(datos.porFormacion || []).map((d, i) => (
@@ -618,15 +634,14 @@ export default function PaginaPublicacion() {
 
               {/* ── Insights IA Adicionales (solo si hay análisis guardado) ── */}
               {interpretacionIA.filter(item => !['conflictos', 'politicas'].includes(item.dimension)).map((item) => {
-                const ICONOS = { conflictos: '⚡', obstaculos: '🧱', politicas: '📜', general: '🤖' };
                 const TITULOS = { conflictos: 'Análisis IA — Conflictos', obstaculos: 'Análisis IA — Obstáculos', politicas: 'Análisis IA — Políticas', general: 'Síntesis General (IA)' };
                 const cats = item.categorias || [];
                 return (
                   <div key={item.dimension} className={`vp-bento-card ${item.dimension === 'general' ? 'vp-bento-wide' : ''}`}
                     style={{ background: 'linear-gradient(135deg, #1E1B4B08 0%, #7C3AED08 100%)', borderColor: '#7C3AED33' }}>
                     <div className="vp-bento-header">
-                      <span className="vp-bento-title" style={{ color: '#7C3AED' }}>
-                        {ICONOS[item.dimension] || '🤖'} {TITULOS[item.dimension] || item.dimension}
+                      <span className="vp-bento-title" style={{ color: '#7C3AED', display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <Zap size={16} /> {TITULOS[item.dimension] || item.dimension}
                       </span>
                       <span className="vp-bento-badge" style={{ background: '#EDE9FE', color: '#7C3AED' }}>IA</span>
                     </div>

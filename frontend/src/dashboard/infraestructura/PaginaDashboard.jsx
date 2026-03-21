@@ -8,6 +8,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
+import { BookOpen, Map, GraduationCap, FileText, Zap } from 'lucide-react';
 
 const AZULES   = ['#0D1B6F','#003DA5','#0072CE','#00AEEF','#B3D4FC'];
 const ACENTO   = ['#0D1B6F','#F26522'];
@@ -91,20 +92,28 @@ export default function PaginaDashboard({ onTotalChange }) {
     <>
       <div className="kpi-row">
         <div className="kpi-card">
-          <div><div className="kpi-label">Total Prácticas</div><div className="kpi-val">{kpis.total}</div></div>
-          <div className="kpi-icon">📚</div>
+          <div className="kpi-icon-box"><BookOpen size={24} /></div>
+          <div className="kpi-content">
+            <div className="kpi-label">Total Prácticas</div><div className="kpi-val">{kpis.total}</div>
+          </div>
         </div>
         <div className="kpi-card">
-          <div><div className="kpi-label">Departamentos</div><div className="kpi-val">{kpis.departamentos}</div></div>
-          <div className="kpi-icon">🗺️</div>
+          <div className="kpi-icon-box"><Map size={24} /></div>
+          <div className="kpi-content">
+            <div className="kpi-label">Departamentos</div><div className="kpi-val">{kpis.departamentos}</div>
+          </div>
         </div>
         <div className="kpi-card">
-          <div><div className="kpi-label">Formación</div><div className="kpi-val">{kpis.conFormacion}</div></div>
-          <div className="kpi-icon">🎓</div>
+          <div className="kpi-icon-box"><GraduationCap size={24} /></div>
+          <div className="kpi-content">
+            <div className="kpi-label">Formación</div><div className="kpi-val">{kpis.conFormacion}</div>
+          </div>
         </div>
         <div className="kpi-card">
-          <div><div className="kpi-label">Materiales</div><div className="kpi-val">{kpis.conMateriales}</div></div>
-          <div className="kpi-icon">📝</div>
+          <div className="kpi-icon-box"><FileText size={24} /></div>
+          <div className="kpi-content">
+            <div className="kpi-label">Materiales</div><div className="kpi-val">{kpis.conMateriales}</div>
+          </div>
         </div>
       </div>
 
@@ -134,7 +143,7 @@ export default function PaginaDashboard({ onTotalChange }) {
           {analizando ? (
             <>⏳ Analizando con IA... (puede tardar ~20s)</>
           ) : (
-            <>🤖 Analizar con IA</>          
+            <><Zap size={16} /> Analizar con IA</>          
           )}
         </button>
         {ultimoAnalisis && !analizando && (
@@ -162,27 +171,13 @@ export default function PaginaDashboard({ onTotalChange }) {
         </div>
       </div>
 
-      <div className="chart-grid triple">
+      <div className="chart-grid">
         <div className="chart-box">
           <div className="chart-title">Jornada Escolar</div>
           <div className="chart-sub">Distribución por jornada</div>
           <GraficoDona datos={datos.porJornada} />
         </div>
-        <div className="chart-box">
-          <div className="chart-title">Lineamientos MEN</div>
-          <div className="chart-sub">Categorías principales</div>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={datos.porFrecuenciaLinea?.slice(0,5) || []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E2E6EC" />
-              <XAxis dataKey="label" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} />
-              <Tooltip />
-              <Bar dataKey="count" radius={[4,4,0,0]}>
-                {(datos.porFrecuenciaLinea||[]).slice(0,5).map((_, i) => <Cell key={i} fill={AZULES[i % AZULES.length]} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+
         <div className="chart-box">
           <div className="chart-title">Formación y Materiales</div>
           <div className="chart-sub">Producción académica por actor</div>

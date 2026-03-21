@@ -41,13 +41,14 @@ export default function PaginaLogin({ onLogin }) {
         width: '100%', maxWidth: '400px', textAlign: 'center',
       }}>
         {/* Logo */}
-        <div style={{
-          width: 64, height: 64, borderRadius: '16px', margin: '0 auto 1rem',
-          background: 'linear-gradient(135deg, #0D1B6F, #003DA5)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.5rem', color: 'white', fontWeight: 800, letterSpacing: '-1px',
-          boxShadow: '0 8px 20px rgba(13,27,111,0.4)',
-        }}>UPN</div>
+        <img
+          src="https://i.ibb.co/mF0BbpnH/Identidad-UPN-25-vertical-azul-fondo-blanco-removebg-preview.png"
+          alt="Universidad Pedagógica Nacional"
+          style={{
+            width: 180, height: 'auto', objectFit: 'contain',
+            margin: '0 auto 1.25rem', display: 'block',
+          }}
+        />
 
         <h1 style={{ color: '#0D1B6F', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 0.25rem' }}>
           Observatorio UPN

@@ -9,15 +9,16 @@ import PaginaChat        from './chat/infraestructura/PaginaChat.jsx';
 import PaginaCarga       from './cargas/infraestructura/PaginaCarga.jsx';
 import PaginaHistorico   from './cargas/infraestructura/PaginaHistorico.jsx';
 import PaginaMapa        from './mapa/infraestructura/PaginaMapa.jsx';
+import { LayoutDashboard, FileSearch, Table, Bot, UploadCloud, Map as MapIcon, History, Globe, LogOut } from 'lucide-react';
 
 const NAVEGACION = [
-  { id: 'dashboard',   label: 'Dashboard',             icon: '📊' },
-  { id: 'conflictos',  label: 'Conflictos y Políticas', icon: '🔍' },
-  { id: 'tabla',       label: 'Tabla de Datos',         icon: '📋' },
-  { id: 'chat',        label: 'Chat con IA',            icon: '🤖' },
-  { id: 'upload',      label: 'Cargar Archivo',         icon: '📤' },
-  { id: 'mapa',        label: 'Mapa de Calor',           icon: '🗺️' },
-  { id: 'historico',   label: 'Histórico',              icon: '🕐' },
+  { id: 'dashboard',   label: 'Dashboard',             icon: <LayoutDashboard size={20} /> },
+  { id: 'conflictos',  label: 'Conflictos y Políticas', icon: <FileSearch size={20} /> },
+  { id: 'tabla',       label: 'Tabla de Datos',         icon: <Table size={20} /> },
+  { id: 'chat',        label: 'Chat con IA',            icon: <Bot size={20} /> },
+  { id: 'upload',      label: 'Cargar Archivo',         icon: <UploadCloud size={20} /> },
+  { id: 'mapa',        label: 'Mapa de Calor',          icon: <MapIcon size={20} /> },
+  { id: 'historico',   label: 'Histórico',              icon: <History size={20} /> },
 ];
 
 export default function App({ onLogout }) {
@@ -58,9 +59,12 @@ export default function App({ onLogout }) {
       <div className="layout">
         {/* ── Sidebar ── */}
         <aside className="sidebar">
-          <div className="sidebar-brand">
-            <h2>Observatorio</h2>
-            <p>Gestión de Conocimiento</p>
+          <div className="sidebar-brand" style={{ padding: '16px 12px 8px' }}>
+            <img
+              src="https://i.ibb.co/mF0BbpnH/Identidad-UPN-25-vertical-azul-fondo-blanco-removebg-preview.png"
+              alt="Universidad Pedagógica Nacional"
+              style={{ width: '100%', maxWidth: 150, height: 'auto', objectFit: 'contain', display: 'block', margin: '0 auto', filter: 'brightness(0) invert(1)' }}
+            />
           </div>
 
           <nav className="sidebar-nav">
@@ -83,12 +87,12 @@ export default function App({ onLogout }) {
             className="nav-btn"
             style={{ textDecoration: 'none', marginTop: 8 }}
           >
-            <span className="nav-icon">🌐</span>
+            <span className="nav-icon"><Globe size={20} /></span>
             Vista Pública
           </a>
 
           <div className="sidebar-footer">
-            <div className="sidebar-footer-avatar">UPN</div>
+            <img src="https://i.ibb.co/mF0BbpnH/Identidad-UPN-25-vertical-azul-fondo-blanco-removebg-preview.png" alt="UPN" className="sidebar-footer-avatar" style={{ width: 36, height: 36, objectFit: 'contain', borderRadius: 0, background: 'transparent', filter: 'brightness(0) invert(1)' }} />
             <div className="sidebar-footer-info">
               {localStorage.getItem('observatorio_usuario') || 'Admin'}
               <small>Administrador</small>
@@ -107,7 +111,7 @@ export default function App({ onLogout }) {
             onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.22)'}
             onMouseLeave={e => e.currentTarget.style.background = 'rgba(239,68,68,0.12)'}
           >
-            🚪 Cerrar Sesión
+            <LogOut size={16} /> Cerrar Sesión
           </button>
         </aside>
 
