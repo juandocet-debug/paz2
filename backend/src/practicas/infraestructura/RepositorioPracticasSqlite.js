@@ -56,6 +56,8 @@ class RepositorioPracticasSqlite extends RepositorioPracticas {
     if (consulta.idCarga) {
       condiciones.push(`upload_id = $${i++}`);
       params.push(consulta.idCarga);
+    } else {
+      condiciones.push(`upload_id = (SELECT MAX(id) FROM uploads)`);
     }
 
     const where = condiciones.join(' AND ');

@@ -39,6 +39,8 @@ function construirWhere(filtros = {}) {
     params.push(filtros.jornada);
   }
 
+  condiciones.push(`upload_id = (SELECT MAX(id) FROM uploads)`);
+
   const where = condiciones.length ? `WHERE ${condiciones.join(' AND ')}` : '';
   return { where, params };
 }
