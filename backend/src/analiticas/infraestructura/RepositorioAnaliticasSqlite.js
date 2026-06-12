@@ -1,9 +1,6 @@
 /**
  * RepositorioAnaliticasSqlite.js — Implementación concreta del puerto
- * RepositorioAnaliticas adaptada a PostgreSQL (pg).
- *
- * Mantenemos el nombre de archivo RepositorioAnaliticasSqlite.js por
- * compatibilidad de imports pero la lógica es 100% pg.
+ * RepositorioAnaliticas adaptada a SQLite (better-sqlite3).
  */
 const RepositorioAnaliticas = require('../dominio/RepositorioAnaliticas');
 
@@ -20,22 +17,21 @@ const COLUMNAS_MULTIVALOR = [
 function construirWhere(filtros = {}) {
   const condiciones = [];
   const params = [];
-  let i = 1;
 
   if (filtros.departamento) {
-    condiciones.push(`departamento = $${i++}`);
+    condiciones.push(`departamento = ?`);
     params.push(filtros.departamento);
   }
   if (filtros.municipio) {
-    condiciones.push(`municipio = $${i++}`);
+    condiciones.push(`municipio = ?`);
     params.push(filtros.municipio);
   }
   if (filtros.tipoInstitucion) {
-    condiciones.push(`tipo_institucion = $${i++}`);
+    condiciones.push(`tipo_institucion = ?`);
     params.push(filtros.tipoInstitucion);
   }
   if (filtros.jornada) {
-    condiciones.push(`jornada = $${i++}`);
+    condiciones.push(`jornada = ?`);
     params.push(filtros.jornada);
   }
 

@@ -1,9 +1,6 @@
 /**
  * RepositorioPracticasSqlite.js — Implementación concreta del puerto
- * RepositorioPracticas usando PostgreSQL (pg).
- *
- * Mantenemos el nombre RepositorioPracticasSqlite.js por compatibilidad de imports
- * pero la sintaxis ha sido migrada a sentencias $1 de PostgreSQL.
+ * RepositorioPracticas usando SQLite (better-sqlite3).
  */
 const RepositorioPracticas = require('../dominio/RepositorioPracticas');
 
@@ -28,33 +25,32 @@ class RepositorioPracticasSqlite extends RepositorioPracticas {
 
     const condiciones = ['1=1'];
     const params = [];
-    let i = 1;
 
     if (consulta.busqueda) {
       condiciones.push(`(
-        institucion ILIKE $${i} OR
-        nombre_practica ILIKE $${i} OR
-        municipio ILIKE $${i} OR
-        departamento ILIKE $${i} OR
-        responsables ILIKE $${i}
+        institucion LIKE ? OR
+        nombre_practica LIKE ? OR
+        municipio LIKE ? OR
+        departamento LIKE ? OR
+        responsables LIKE ?
       )`);
-      params.push(`%${consulta.busqueda}%`);
-      i++;
+      const term = `%${consulta.busqueda}%`;
+      params.push(term, term, term, term, term);
     }
     if (consulta.departamento) {
-      condiciones.push(`departamento = $${i++}`);
+      condiciones.push(`departamento = ?`);
       params.push(consulta.departamento);
     }
     if (consulta.tipo) {
-      condiciones.push(`tipo_institucion = $${i++}`);
+      condiciones.push(`tipo_institucion = ?`);
       params.push(consulta.tipo);
     }
     if (consulta.formacion) {
-      condiciones.push(`recibio_formacion = $${i++}`);
+      condiciones.push(`recibio_formacion = ?`);
       params.push(consulta.formacion);
     }
     if (consulta.idCarga) {
-      condiciones.push(`upload_id = $${i++}`);
+      condiciones.push(`upload_id = ?`);
       params.push(consulta.idCarga);
     } else {
       condiciones.push(`upload_id = (SELECT MAX(id) FROM uploads)`);
@@ -63,10 +59,7 @@ class RepositorioPracticasSqlite extends RepositorioPracticas {
     const where = condiciones.join(' AND ');
     const desplazamiento = (consulta.pagina - 1) * consulta.tamanioPagina;
 
-    const limitIdx = i++;
-    const offsetIdx = i++;
-
-    const sqlRegistros = `SELECT * FROM practices WHERE ${where} ORDER BY ${columna} ${direccion} LIMIT $${limitIdx} OFFSET $${offsetIdx}`;
+    const sqlRegistros = `SELECT * FROM practices WHERE ${where} ORDER BY ${columna} ${direccion} LIMIT ? OFFSET ?`;
     const resRegistros = await this.db.query(sqlRegistros, [...params, consulta.tamanioPagina, desplazamiento]);
     
     const resTotal = await this.db.query(`SELECT COUNT(*) as n FROM practices WHERE ${where}`, params);
@@ -78,7 +71,7 @@ class RepositorioPracticasSqlite extends RepositorioPracticas {
   }
 
   async buscarPorId(id) {
-    const res = await this.db.query('SELECT * FROM practices WHERE id = $1', [id]);
+    const res = await this.db.query('SELECT * FROM practices WHERE id = ?', [id]);
     return res.rows[0] || null;
   }
 
@@ -96,8 +89,8 @@ class RepositorioPracticasSqlite extends RepositorioPracticas {
           entidades_cajas, criterios_materiales, disenaron_materiales,
           obstaculos, facilidades_sostenibilidad
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17,
-          $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28
+          ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+          ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         )`;
 
       for (const f of practicas) {
@@ -115,14 +108,11 @@ class RepositorioPracticasSqlite extends RepositorioPracticas {
     } catch (err) {
       await client.query('ROLLBACK');
       throw err;
-    } finally {
-      client.release();
     }
   }
 
   async valoresDistintos(columna) {
     if (!COLUMNAS_FILTRO.includes(columna)) return [];
-    // Las columnas en PostgreSQL deben venir escapadas o pasarse directo sin inyecciones
     const res = await this.db.query(
       `SELECT DISTINCT ${columna} as valor FROM practices WHERE ${columna} IS NOT NULL AND ${columna} <> '' ORDER BY ${columna}`
     );
@@ -131,13 +121,13 @@ class RepositorioPracticasSqlite extends RepositorioPracticas {
 
   async actualizarCoordenadas(id, lat, lng) {
     await this.db.query(
-      'UPDATE practices SET latitud = $1, longitud = $2 WHERE id = $3',
+      'UPDATE practices SET latitud = ?, longitud = ? WHERE id = ?',
       [lat, lng, id]
     );
   }
 
   async eliminarPorCargaId(cargaId) {
-    await this.db.query('DELETE FROM practices WHERE upload_id = $1', [cargaId]);
+    await this.db.query('DELETE FROM practices WHERE upload_id = ?', [cargaId]);
   }
 
   async eliminarHuerfanas() {

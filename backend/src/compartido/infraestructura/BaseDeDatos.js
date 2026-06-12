@@ -1,34 +1,30 @@
 /**
- * BaseDeDatos.js — Conexión PostgreSQL (Neon/Local) usando 'pg'.
+ * BaseDeDatos.js — Conexión a SQLite usando 'better-sqlite3'.
  *
- * Mantiene compatibilidad asíncrona (exportando la instancia con métodos asíncronos).
+ * Mantiene compatibilidad asíncrona con el wrapper anterior para no romper los repositorios,
+ * simulando las respuestas de pg (res.rows).
  */
-const { Pool } = require('pg');
+const Database = require('better-sqlite3');
+const path = require('path');
 
 class BaseDeDatosWrapper {
   constructor() {
-    this._pool = null;
+    this._db = null;
   }
 
-  /**
-   * Inicializa el Pool y asegura de que el esquema de base de datos exista.
-   */
   async init() {
-    if (this._pool) return this;
-
-    const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/proyecto_paz';
-    const isProduction = !!process.env.DATABASE_URL;
-
-    this._pool = new Pool({
-      connectionString,
-      ssl: isProduction ? { rejectUnauthorized: false } : false
-    });
+    if (this._db) return this;
 
     try {
-      await this._inicializarEsquema();
-      console.log('✅ Base de datos PostgreSQL inicializada con éxito.');
+      // Crea el archivo SQLite local en la raíz del backend
+      const dbPath = path.join(__dirname, '../../../../proyecto_paz.sqlite');
+      this._db = new Database(dbPath, { verbose: null });
+      this._db.pragma('journal_mode = WAL');
+      
+      this._inicializarEsquema();
+      console.log('✅ Base de datos SQLite inicializada con éxito.');
     } catch (e) {
-      console.error('❌ Error al inicializar esquema PostgreSQL:', e);
+      console.error('❌ Error al inicializar esquema SQLite:', e);
       throw e;
     }
 
@@ -36,37 +32,59 @@ class BaseDeDatosWrapper {
   }
 
   /**
-   * Delega las consultas al pool, equivalente a db.query() estándar.
-   * @param {string} text - Consulta SQL
-   * @param {any[]} [params] - Parámetros $1, $2, etc.
+   * Delega las consultas a better-sqlite3 emulando el comportamiento de pg.
+   * En pg: await db.query('SELECT...', [1]) => devuelve { rows: [...] }
+   * En SQLite: db.prepare('SELECT...').all(1)
    */
-  query(text, params) {
-    if (!this._pool) throw new Error('La base de datos no ha sido inicializada.');
-    return this._pool.query(text, params);
+  async query(text, params = []) {
+    if (!this._db) throw new Error('La base de datos no ha sido inicializada.');
+    
+    // SQLite requiere que la sintaxis de variables sea ? o @var, los repositorios
+    // ya estarán modificados para usar ?.
+    const stmt = this._db.prepare(text);
+    
+    // Si la consulta empieza por SELECT o PRAGMA, usamos .all()
+    // Si es INSERT, UPDATE, DELETE o CREATE, usamos .run()
+    const isSelect = /^\s*(SELECT|PRAGMA|WITH.*SELECT)/i.test(text);
+    
+    try {
+      if (isSelect) {
+        const rows = stmt.all(...params);
+        return { rows, rowCount: rows.length };
+      } else {
+        const info = stmt.run(...params);
+        return { rows: [], rowCount: info.changes, insertId: info.lastInsertRowid };
+      }
+    } catch (err) {
+      throw err;
+    }
   }
 
   /**
    * Utilizar para lógica de transacciones explícitas.
-   * Retorna un cliente de la piscina ("client").
+   * Emula el "client" de pg devolviendo el mismo wrapper, 
+   * ya que SQLite no maneja conexiones concurrentes del mismo modo.
    */
   async getClient() {
-    return this._pool.connect();
+    return {
+      query: (text, params) => this.query(text, params)
+    };
   }
 
-  async _inicializarEsquema() {
+  _inicializarEsquema() {
     const ddl = `
       CREATE TABLE IF NOT EXISTS uploads (
-        id            SERIAL PRIMARY KEY,
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
         original_name TEXT    NOT NULL,
         stored_name   TEXT    NOT NULL,
         records_count INTEGER NOT NULL DEFAULT 0,
-        uploaded_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        uploaded_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
         publicado     INTEGER DEFAULT 0
       );
 
       CREATE TABLE IF NOT EXISTS practices (
-        id                         SERIAL PRIMARY KEY,
-        upload_id                  INTEGER NOT NULL REFERENCES uploads(id) ON DELETE CASCADE,
+        id                         INTEGER PRIMARY KEY AUTOINCREMENT,
+        upload_id                  INTEGER NOT NULL,
         fecha                      TEXT,
         institucion                TEXT,
         sede                       TEXT,
@@ -96,18 +114,21 @@ class BaseDeDatosWrapper {
         facilidades_sostenibilidad TEXT,
         latitud                    REAL,
         longitud                   REAL,
-        created_at                 TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        created_at                 DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(upload_id) REFERENCES uploads(id) ON DELETE CASCADE
       );
 
       CREATE TABLE IF NOT EXISTS analisis_ia (
-        id          SERIAL PRIMARY KEY,
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
         dimension   TEXT NOT NULL UNIQUE,
         resumen     TEXT,
         categorias  TEXT,
-        generado_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        generado_at DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `;
-    await this.query(ddl);
+    
+    // Ejecuta las sentencias múltiples separadas
+    this._db.exec(ddl);
   }
 }
 

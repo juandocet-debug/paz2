@@ -1,10 +1,6 @@
 /**
  * RepositorioCargasSqlite.js — Implementación concreta del puerto
- * RepositorioCargas usando PostgreSQL (pg).
- *
- * Mantenemos el nombre de archivo RepositorioCargasSqlite.js temporalmente
- * para evitar refactorizar los imports en toda la aplicación, pero la
- * lógica se ha migrado a Postgres.
+ * RepositorioCargas usando SQLite (better-sqlite3).
  */
 const RepositorioCargas = require('../dominio/RepositorioCargas');
 
@@ -21,22 +17,21 @@ class RepositorioCargasSqlite extends RepositorioCargas {
   }
 
   async buscarPorId(id) {
-    const res = await this.db.query('SELECT * FROM uploads WHERE id = $1', [id]);
+    const res = await this.db.query('SELECT * FROM uploads WHERE id = ?', [id]);
     return res.rows[0] || null;
   }
 
   async crear({ nombre_original, nombre_guardado, cantidad_registros }) {
-    const res = await this.db.query(`
-      INSERT INTO uploads (original_name, stored_name, records_count)
-      VALUES ($1, $2, $3)
-      RETURNING id
-    `, [nombre_original, nombre_guardado, cantidad_registros]);
-
-    return res.rows[0].id;
+    // SQLite no tiene RETURNING, usamos insertId del wrapper
+    const res = await this.db.query(
+      `INSERT INTO uploads (original_name, stored_name, records_count) VALUES (?, ?, ?)`,
+      [nombre_original, nombre_guardado, cantidad_registros]
+    );
+    return res.insertId;
   }
 
   async eliminarPorId(id) {
-    await this.db.query('DELETE FROM uploads WHERE id = $1', [id]);
+    await this.db.query('DELETE FROM uploads WHERE id = ?', [id]);
   }
 
   async marcarPublicado(id) {
@@ -44,14 +39,12 @@ class RepositorioCargasSqlite extends RepositorioCargas {
     try {
       await client.query('BEGIN');
       await client.query('UPDATE uploads SET publicado = 0');
-      const info = await client.query('UPDATE uploads SET publicado = 1 WHERE id = $1', [id]);
+      const info = await client.query('UPDATE uploads SET publicado = 1 WHERE id = ?', [id]);
       if (info.rowCount === 0) throw new Error('Carga no encontrada');
       await client.query('COMMIT');
     } catch (e) {
       await client.query('ROLLBACK');
       throw e;
-    } finally {
-      client.release();
     }
   }
 }
