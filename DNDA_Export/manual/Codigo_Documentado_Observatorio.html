@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Código Documentado — Observatorio de Prácticas Educativas UPN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  /* ══════════════════════════════════════════════════
+     SISTEMA DE DISEÑO GLOBAL
+  ══════════════════════════════════════════════════ */
+  :root {
+    --blue:      #003087;
+    --blue-mid:  #1a4fa0;
+    --blue-dark: #001854;
+    --orange:    #e85d04;
+    --orange-lt: #f4a261;
+    --green:     #16a34a;
+    --purple:    #7c3aed;
+    --red:       #dc2626;
+    --gray-bg:   #f8fafc;
+    --gray-bd:   #e2e8f0;
+    --text:      #0f172a;
+    --muted:     #64748b;
+    --white:     #ffffff;
+    --code-bg:   #0d1117;
+    --code-line: #1c2333;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    font-size: 10.5pt;
+    line-height: 1.6;
+  }
+
+  /* ══════════════════════════════════════════════════
+     PORTADA — página 1
+  ══════════════════════════════════════════════════ */
+  .portada {
+    page-break-after: always;
+    min-height: 100vh;
+    background: linear-gradient(150deg, #020c1b 0%, #003087 50%, #0d1f3c 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .portada-franja {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #e85d04, #f4a261, #e85d04);
+  }
+
+  .portada-icon {
+    font-size: 52px;
+    margin-bottom: 24px;
+    background: rgba(255,255,255,0.07);
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    border: 2px solid rgba(255,255,255,0.12);
+  }
+
+  .portada-badge {
+    display: inline-block;
+    background: rgba(232,93,4,0.18);
+    border: 1px solid rgba(232,93,4,0.4);
+    color: #f4a261;
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .portada h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38pt;
+    font-weight: 900;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+
+  .portada h1 span { color: #f4a261; }
+
+  .portada-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 12pt;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .portada-meta {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .portada-chip {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.75);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 9pt;
+    font-weight: 500;
+  }
+
+  .portada-chip strong { display: block; color: #f4a261; font-size: 11pt; margin-bottom: 2px; }
+
+  .portada-footer {
+    position: absolute;
+    bottom: 28px; left: 0; right: 0;
+    text-align: center;
+    color: rgba(255,255,255,0.25);
+    font-size: 8pt;
+    letter-spacing: 1px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     ÍNDICE — página 2
+  ══════════════════════════════════════════════════ */
+  .pagina {
+    page-break-after: always;
+    padding: 52px 60px;
+    min-height: 100vh;
+    background: white;
+    position: relative;
+  }
+
+  .pagina:last-child { page-break-after: auto; }
+
+  .pagina-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--blue);
+    margin-bottom: 32px;
+  }
+
+  .pagina-tag {
+    background: var(--blue);
+    color: white;
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .pagina-breadcrumb {
+    color: var(--muted);
+    font-size: 8pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: 10px;
+  }
+
+  .pagina-marca {
+    color: var(--blue);
+    font-size: 8pt;
+    font-weight: 700;
+    opacity: 0.5;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════════════════════════
+     ÍNDICE
+  ══════════════════════════════════════════════════ */
+  .toc { list-style: none; }
+
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    border: 1px solid var(--gray-bd);
+    background: var(--gray-bg);
+    cursor: default;
+  }
+
+  .toc-num {
+    min-width: 26px; height: 26px;
+    background: var(--blue);
+    color: white;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8.5pt;
+    font-weight: 700;
+  }
+
+  .toc-title { flex: 1; font-size: 9.5pt; font-weight: 500; }
+  .toc-file {
+    font-family: 'Fira Code', monospace;
+    font-size: 8pt;
+    color: var(--muted);
+    background: white;
+    border: 1px solid var(--gray-bd);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     BLOQUE DE ARCHIVO DE CÓDIGO
+  ══════════════════════════════════════════════════ */
+  .archivo-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding: 16px 20px;
+    background: var(--blue);
+    border-radius: 12px 12px 0 0;
+    color: white;
+  }
+
+  .archivo-icono {
+    font-size: 22px;
+    background: rgba(255,255,255,0.12);
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .archivo-nombre {
+    font-family: 'Fira Code', monospace;
+    font-size: 11pt;
+    font-weight: 600;
+  }
+
+  .archivo-ruta {
+    font-size: 8pt;
+    opacity: 0.6;
+    font-family: 'Fira Code', monospace;
+    margin-top: 2px;
+  }
+
+  .archivo-badge {
+    margin-left: auto;
+    background: rgba(232,93,4,0.3);
+    border: 1px solid rgba(232,93,4,0.5);
+    color: #f4a261;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 8pt;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Descripción del archivo */
+  .archivo-desc {
+    background: #f0f4ff;
+    border: 1px solid #c7d8ff;
+    border-left: 4px solid var(--blue);
+    padding: 14px 18px;
+    border-radius: 0 0 0 0;
+    margin-bottom: 0;
+    font-size: 9.5pt;
+    color: #1e3a7a;
+    line-height: 1.6;
+  }
+
+  .archivo-desc strong { display: block; margin-bottom: 4px; font-size: 10pt; }
+
+  /* ══════════════════════════════════════════════════
+     BLOQUE DE CÓDIGO
+  ══════════════════════════════════════════════════ */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    border: 1px solid #21262d;
+    border-top: none;
+  }
+
+  .code-toolbar {
+    background: #161b22;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid #21262d;
+  }
+
+  .code-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .code-dot-red    { background: #ff5f57; }
+  .code-dot-yellow { background: #ffbd2e; }
+  .code-dot-green  { background: #27c93f; }
+
+  .code-lang {
+    margin-left: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 8pt;
+    color: #8b949e;
+  }
+
+  pre {
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 8.5pt;
+    line-height: 1.65;
+    color: #c9d1d9;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Resaltado de sintaxis */
+  .kw  { color: #ff7b72; }           /* keywords: const, class, async... */
+  .fn  { color: #d2a8ff; }           /* function names */
+  .str { color: #a5d6ff; }           /* strings */
+  .cm  { color: #8b949e; font-style: italic; } /* comments */
+  .nm  { color: #79c0ff; }           /* numbers */
+  .op  { color: #ff7b72; }           /* operators */
+  .tp  { color: #ffa657; }           /* types / class names */
+  .sg  { color: #3fb950; }           /* SQL / especial */
+  .pl  { color: #e3b341; }           /* params */
+
+  /* Anotaciones inline */
+  .anotacion {
+    display: block;
+    background: rgba(255,189,46,0.07);
+    border-left: 3px solid #e3b341;
+    padding: 6px 14px;
+    margin: 4px 0;
+    color: #e3b341;
+    font-size: 8pt;
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ══════════════════════════════════════════════════
+     CAJAS DE EXPLICACIÓN
+  ══════════════════════════════════════════════════ */
+  .explain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0 28px;
+  }
+
+  .explain-card {
+    background: var(--gray-bg);
+    border: 1px solid var(--gray-bd);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .explain-card-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .explain-card-text {
+    font-size: 9pt;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .info-box {
+    background: #e8f0fe;
+    border-left: 4px solid var(--blue-mid);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 9pt;
+    color: #1e3a7a;
+    line-height: 1.6;
+  }
+
+  .info-box strong { font-weight: 700; }
+
+  .warn-box {
+    background: #fff7ed;
+    border-left: 4px solid var(--orange);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 9pt;
+    color: #7c3616;
+    line-height: 1.6;
+  }
+
+  .ok-box {
+    background: #f0fdf4;
+    border-left: 4px solid var(--green);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 9pt;
+    color: #14532d;
+    line-height: 1.6;
+  }
+
+  h2.section-h {
+    font-family: 'Playfair Display', serif;
+    font-size: 18pt;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  h2.section-h span { color: var(--orange); }
+
+  p.section-lead {
+    font-size: 9.5pt;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 680px;
+  }
+
+  hr.sep { border: none; border-top: 1px solid var(--gray-bd); margin: 24px 0; }
+
+  .pie {
+    position: absolute;
+    bottom: 20px; left: 60px; right: 60px;
+    display: flex; justify-content: space-between;
+    font-size: 7.5pt;
+    color: var(--muted);
+    border-top: 1px solid var(--gray-bd);
+    padding-top: 8px;
+    opacity: 0.6;
+  }
+
+  /* IMPRIMIR */
+  @media print {
+    .pagina, .portada { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-size: 9.5pt; }
+  }
+
+  /* BOTÓN IMPRIMIR (sólo en pantalla) */
+  .print-btn {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,48,135,0.35);
+    z-index: 100;
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .print-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,48,135,0.5);
+  }
+
+  @media print { .print-btn { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- BOTÓN IMPRIMIR/DESCARGAR PDF -->
+<button class="print-btn" onclick="window.print()">
+  🖨️ Descargar PDF
+</button>
+
+<!-- ══════════════════════════════════════════════════════
+     PORTADA
+══════════════════════════════════════════════════════ -->
+<div class="portada">
+  <div class="portada-franja"></div>
+  <div class="portada-icon">💻</div>
+  <div class="portada-badge">Documentación Técnica · Código Fuente Anotado</div>
+  <h1>Código <span>Documentado</span><br>del Observatorio</h1>
+  <p class="portada-sub">
+    Registro completo del código fuente comentado y anotado del Observatorio de Prácticas Educativas. Cada archivo incluye su propósito, arquitectura, decisiones técnicas y referencias pedagógicas.
+  </p>
+  <div class="portada-meta">
+    <div class="portada-chip"><strong>Universidad Pedagógica Nacional</strong>Facultad de Educación · Colombia</div>
+    <div class="portada-chip"><strong>Stack Tecnológico</strong>Node.js + React 19 + SQLite</div>
+    <div class="portada-chip"><strong>Patrón</strong>Arquitectura Hexagonal (Ports & Adapters)</div>
+    <div class="portada-chip"><strong>Versión</strong>1.0 · Mayo 2026</div>
+  </div>
+  <div class="portada-footer">Observatorio de Prácticas Educativas — Paz, Memoria y DDHH · UPN Colombia · 2026</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PÁGINA 2: ÍNDICE Y ARQUITECTURA
+══════════════════════════════════════════════════════ -->
+<div class="pagina">
+  <div class="pagina-header">
+    <div><span class="pagina-tag">Índice</span><span class="pagina-breadcrumb">Tabla de Contenido</span></div>
+    <span class="pagina-marca">Observatorio UPN</span>
+  </div>
+
+  <h2 class="section-h">Archivos <span>Documentados</span></h2>
+  <p class="section-lead">El sistema se divide en dos grandes capas: el <strong>Backend API</strong> (Node.js/Express) que maneja la lógica de negocio y la persistencia, y el <strong>Frontend SPA</strong> (React) que construye la interfaz interactiva.</p>
+
+  <ul class="toc">
+    <li class="toc-item"><div class="toc-num">1</div><div class="toc-title">Punto de entrada del servidor</div><div class="toc-file">backend/src/app.js</div></li>
+    <li class="toc-item"><div class="toc-num">2</div><div class="toc-title">Capa de acceso a la base de datos SQLite</div><div class="toc-file">BaseDeDatos.js</div></li>
+    <li class="toc-item"><div class="toc-num">3</div><div class="toc-title">Repositorio de prácticas educativas</div><div class="toc-file">RepositorioPracticasSqlite.js</div></li>
+    <li class="toc-item"><div class="toc-num">4</div><div class="toc-title">Repositorio de cargas masivas</div><div class="toc-file">RepositorioCargasSqlite.js</div></li>
+    <li class="toc-item"><div class="toc-num">5</div><div class="toc-title">Controlador del Chat con IA</div><div class="toc-file">ControladorChat.js</div></li>
+    <li class="toc-item"><div class="toc-num">6</div><div class="toc-title">Proveedor de IA — Groq Llama 3.3</div><div class="toc-file">ProveedorIAGroq.js</div></li>
+    <li class="toc-item"><div class="toc-num">7</div><div class="toc-title">Caso de uso: Enviar Mensaje al Asistente IA</div><div class="toc-file">ManejadorEnviarMensaje.js</div></li>
+    <li class="toc-item"><div class="toc-num">8</div><div class="toc-title">Proveedor de contexto pedagógico para la IA</div><div class="toc-file">ProveedorContextoObservatorio.js</div></li>
+    <li class="toc-item"><div class="toc-num">9</div><div class="toc-title">Enrutador principal del Frontend (SPA)</div><div class="toc-file">frontend/src/App.jsx</div></li>
+    <li class="toc-item"><div class="toc-num">10</div><div class="toc-title">Cliente HTTP centralizado del Frontend</div><div class="toc-file">ClienteHttp.js</div></li>
+  </ul>
+
+  <hr class="sep">
+
+  <div class="explain-grid">
+    <div class="explain-card">
+      <div class="explain-card-title">🏛️ Arquitectura Hexagonal</div>
+      <div class="explain-card-text">Cada slice (practicas, cargas, chat) contiene tres capas: <strong>dominio</strong> (reglas del negocio puras), <strong>aplicación</strong> (casos de uso) e <strong>infraestructura</strong> (adaptadores HTTP, repositorios SQLite, proveedores externos). Esto garantiza que las reglas de negocio no dependan de ningún framework externo.</div>
+    </div>
+    <div class="explain-card">
+      <div class="explain-card-title">🤖 Patrón RAG para la IA</div>
+      <div class="explain-card-text">El chat con IA utiliza <strong>Retrieval-Augmented Generation</strong>: antes de enviar el mensaje del docente al modelo Llama 3.3, el sistema consulta las estadísticas reales del observatorio y las inyecta en el prompt del sistema. Esto elimina alucinaciones y garantiza respuestas fundamentadas en datos reales.</div>
+    </div>
+  </div>
+
+  <div class="pie"><span>Universidad Pedagógica Nacional · Observatorio UPN</span><span>Pág 2</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ARCHIVO 1: app.js
+══════════════════════════════════════════════════════ -->
+<div class="pagina">
+  <div class="pagina-header">
+    <div><span class="pagina-tag">Archivo 1</span><span class="pagina-breadcrumb">Punto de Entrada del Servidor</span></div>
+    <span class="pagina-marca">Observatorio UPN</span>
+  </div>
+
+  <div class="archivo-header">
+    <div class="archivo-icono">⚙️</div>
+    <div>
+      <div class="archivo-nombre">app.js</div>
+      <div class="archivo-ruta">backend/src/app.js</div>
+    </div>
+    <div class="archivo-badge">Backend · Node.js</div>
+  </div>
+
+  <div class="archivo-desc">
+    <strong>Propósito:</strong>
+    Es el punto de entrada del servidor. Aquí se inicializa la base de datos SQLite, se cargan todos los controladores de cada slice funcional (auth, prácticas, cargas, analíticas, chat) y se configura el servidor Express con sus middlewares globales. Sigue el patrón de <em>Composition Root</em>: todas las dependencias se ensamblan en un solo lugar.
+  </div>
+
+  <div class="code-block">
+    <div class="code-toolbar">
+      <div class="code-dot code-dot-red"></div>
+      <div class="code-dot code-dot-yellow"></div>
+      <div class="code-dot code-dot-green"></div>
+      <div class="code-lang">JavaScript · Node.js</div>
+    </div>
+    <pre><span class="cm">/**
+ * app.js — Punto de entrada del backend.
+ *
+ * Registra los controladores de cada slice y configura Express.
+ * La base de datos se inicializa de forma async antes de arrancar.
+ */</span>
+<span class="cm">// Carga las variables de entorno desde el archivo .env del backend</span>
+<span class="kw">require</span>(<span class="str">'dotenv'</span>).config({ path: <span class="kw">require</span>(<span class="str">'path'</span>).join(__dirname, <span class="str">'../.env'</span>) });
+
+<span class="kw">const</span> express = <span class="kw">require</span>(<span class="str">'express'</span>);  <span class="cm">// Framework web</span>
+<span class="kw">const</span> cors    = <span class="kw">require</span>(<span class="str">'cors'</span>);     <span class="cm">// Permite peticiones desde el frontend en otro dominio</span>
+<span class="kw">const</span> path    = <span class="kw">require</span>(<span class="str">'path'</span>);
+
+<span class="cm">// Singleton de la base de datos — se inicializa una sola vez</span>
+<span class="kw">const</span> db = <span class="kw">require</span>(<span class="str">'./compartido/infraestructura/BaseDeDatos'</span>);
+
+<span class="cm">/**
+ * Función principal asíncrona.
+ * Espera a que SQLite cargue el WASM y cree las tablas
+ * ANTES de registrar cualquier ruta HTTP.
+ */</span>
+<span class="kw">async function</span> <span class="fn">iniciar</span>() {
+  <span class="cm">/* ── 1. Inicializar la base de datos ── */</span>
+  <span class="kw">await</span> db.init();
+
+  <span class="cm">/* ── 2. Importar controladores DESPUÉS de que la BD esté lista ──
+     Cada controlador instancia sus propios repositorios e inyecta la BD */</span>
+  <span class="kw">const</span> controladorAuth       = <span class="kw">require</span>(<span class="str">'./auth/infraestructura/ControladorAuth'</span>);
+  <span class="kw">const</span> controladorPracticas  = <span class="kw">require</span>(<span class="str">'./practicas/infraestructura/ControladorPracticas'</span>);
+  <span class="kw">const</span> controladorCargas     = <span class="kw">require</span>(<span class="str">'./cargas/infraestructura/ControladorCargas'</span>);
+  <span class="kw">const</span> controladorAnaliticas = <span class="kw">require</span>(<span class="str">'./analiticas/infraestructura/ControladorAnaliticas'</span>);
+  <span class="kw">const</span> controladorChat       = <span class="kw">require</span>(<span class="str">'./chat/infraestructura/ControladorChat'</span>);
+  <span class="kw">const</span> manejadorErrores      = <span class="kw">require</span>(<span class="str">'./compartido/infraestructura/ManejadorErrores'</span>);
+
+  <span class="kw">const</span> app  = express();
+  <span class="kw">const</span> PORT = process.env.PORT || <span class="nm">3000</span>;
+
+  <span class="cm">/* ── 3. Middlewares globales ── */</span>
+  app.use(cors());           <span class="cm">// Habilita CORS para Netlify → Railway</span>
+  app.use(express.json());   <span class="cm">// Parsea el body JSON de las peticiones</span>
+
+  <span class="cm">/* ── 4. Registro de rutas por slice funcional ── */</span>
+  app.use(<span class="str">'/api/auth'</span>,      controladorAuth);       <span class="cm">// POST /api/auth/login</span>
+  app.use(<span class="str">'/api/practices'</span>, controladorPracticas);  <span class="cm">// GET  /api/practices</span>
+  app.use(<span class="str">'/api/uploads'</span>,   controladorCargas);     <span class="cm">// POST /api/uploads/upload</span>
+  app.use(<span class="str">'/api/analytics'</span>, controladorAnaliticas); <span class="cm">// GET  /api/analytics/dashboard</span>
+  app.use(<span class="str">'/api/chat'</span>,      controladorChat);       <span class="cm">// POST /api/chat</span>
+
+  app.use(manejadorErrores); <span class="cm">// Captura todos los errores no tratados</span>
+
+  <span class="cm">/* ── 5. Arrancar el servidor ── */</span>
+  app.listen(PORT, () => {
+    console.log(<span class="str">`✔ Observatorio corriendo en http://localhost:${PORT}`</span>);
+  });
+}
+
+<span class="cm">// Lanzar y capturar errores fatales de arranque</span>
+iniciar().<span class="fn">catch</span>(err => {
+  console.error(<span class="str">'Error fatal al iniciar:'</span>, err);
+  process.exit(<span class="nm">1</span>);
+});</pre>
+  </div>
+
+  <div class="info-box">
+    <strong>Decisión arquitectónica:</strong> Los controladores se importan <em>dentro</em> de la función <code>iniciar()</code> y no al principio del archivo. Esto garantiza que cuando Node.js ejecuta el <code>require()</code> de cada controlador, la base de datos ya está disponible y las tablas ya han sido creadas.
+  </div>
+
+  <div class="pie"><span>Universidad Pedagógica Nacional · Observatorio UPN</span><span>Pág 3</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ARCHIVO 2: BaseDeDatos.js
+══════════════════════════════════════════════════════ -->
+<div class="pagina">
+  <div class="pagina-header">
+    <div><span class="pagina-tag">Archivo 2</span><span class="pagina-breadcrumb">Capa de Acceso a Datos</span></div>
+    <span class="pagina-marca">Observatorio UPN</span>
+  </div>
+
+  <div class="archivo-header">
+    <div class="archivo-icono">🗄️</div>
+    <div>
+      <div class="archivo-nombre">BaseDeDatos.js</div>
+      <div class="archivo-ruta">backend/src/compartido/infraestructura/BaseDeDatos.js</div>
+    </div>
+    <div class="archivo-badge">Infraestructura · SQLite</div>
+  </div>
+
+  <div class="archivo-desc">
+    <strong>Propósito:</strong>
+    Es el adaptador de base de datos del sistema. Encapsula la librería <code>better-sqlite3</code> detrás de una interfaz asíncrona compatible con el patrón de consultas anterior (PostgreSQL). Al inicializarse, crea el archivo físico <code>proyecto_paz.sqlite</code> y ejecuta el DDL completo para crear las tres tablas del sistema si no existen.
+  </div>
+
+  <div class="code-block">
+    <div class="code-toolbar">
+      <div class="code-dot code-dot-red"></div>
+      <div class="code-dot code-dot-yellow"></div>
+      <div class="code-dot code-dot-green"></div>
+      <div class="code-lang">JavaScript · SQLite</div>
+    </div>
+    <pre><span class="kw">const</span> Database = <span class="kw">require</span>(<span class="str">'better-sqlite3'</span>); <span class="cm">// Driver nativo SQLite para Node.js</span>
+<span class="kw">const</span> path = <span class="kw">require</span>(<span class="str">'path'</span>);
+
+<span class="kw">class</span> <span class="tp">BaseDeDatosWrapper</span> {
+  constructor() { <span class="kw">this</span>._db = <span class="kw">null</span>; }
+
+  <span class="cm">/** Abre o crea el archivo SQLite y ejecuta el esquema DDL */</span>
+  <span class="kw">async</span> <span class="fn">init</span>() {
+    <span class="kw">if</span> (<span class="kw">this</span>._db) <span class="kw">return this</span>; <span class="cm">// Patrón Singleton: no inicializar dos veces</span>
+    <span class="cm">// El archivo se crea automáticamente si no existe</span>
+    <span class="kw">const</span> dbPath = path.join(__dirname, <span class="str">'../../../../proyecto_paz.sqlite'</span>);
+    <span class="kw">this</span>._db = <span class="kw">new</span> <span class="tp">Database</span>(dbPath, { verbose: <span class="kw">null</span> });
+    <span class="cm">// WAL = Write-Ahead Logging: mejora el rendimiento en escrituras concurrentes</span>
+    <span class="kw">this</span>._db.pragma(<span class="str">'journal_mode = WAL'</span>);
+    <span class="kw">this</span>._inicializarEsquema();
+    <span class="kw">return this</span>;
+  }
+
+  <span class="cm">/**
+   * Emula la API de pg: await db.query('SELECT...', [params])
+   * Devuelve { rows: [...], rowCount: N, insertId: N }
+   * Los repositorios usan '?' como marcador de posición (SQLite)
+   */</span>
+  <span class="kw">async</span> <span class="fn">query</span>(text, params = []) {
+    <span class="kw">const</span> stmt = <span class="kw">this</span>._db.prepare(text);
+    <span class="cm">// Detectar tipo de sentencia para usar .all() o .run()</span>
+    <span class="kw">const</span> isSelect = /^\s*(SELECT|PRAGMA|WITH.*SELECT)/i.test(text);
+    <span class="kw">if</span> (isSelect) {
+      <span class="kw">const</span> rows = stmt.all(...params);
+      <span class="kw">return</span> { rows, rowCount: rows.length };
+    } <span class="kw">else</span> {
+      <span class="kw">const</span> info = stmt.run(...params);
+      <span class="cm">// insertId es el ROWID del último INSERT, útil para AUTOINCREMENT</span>
+      <span class="kw">return</span> { rows: [], rowCount: info.changes, insertId: info.lastInsertRowid };
+    }
+  }
+
+  <span class="cm">/** Devuelve un pseudo-cliente para transacciones explícitas BEGIN/COMMIT/ROLLBACK */</span>
+  <span class="kw">async</span> <span class="fn">getClient</span>() {
+    <span class="kw">return</span> { query: (text, params) => <span class="kw">this</span>.query(text, params) };
+  }
+
+  <span class="cm">/**
+   * DDL: Crea las tres tablas principales del sistema.
+   * Se ejecuta con IF NOT EXISTS para ser idempotente.
+   *
+   * Tablas:
+   *   uploads   → registro de cada archivo Excel cargado
+   *   practices → cada fila de práctica educativa territorial
+   *   analisis_ia → cache de los análisis generados por IA
+   */</span>
+  <span class="fn">_inicializarEsquema</span>() {
+    <span class="kw">this</span>._db.exec(<span class="str">`
+      CREATE TABLE IF NOT EXISTS uploads (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        original_name TEXT    NOT NULL,
+        stored_name   TEXT    NOT NULL,
+        records_count INTEGER NOT NULL DEFAULT 0,
+        uploaded_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+        publicado     INTEGER DEFAULT 0     -- 1 = visible en la vista pública
+      );
+      CREATE TABLE IF NOT EXISTS practices (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        upload_id     INTEGER NOT NULL,
+        institucion   TEXT, departamento TEXT, municipio TEXT,
+        nombre_practica TEXT, conflictos_tipo TEXT,
+        politicas_relacionadas TEXT, temas_catedra_paz TEXT,
+        latitud REAL, longitud REAL,   -- coordenadas para el mapa de calor
+        ...                            -- resto de columnas pedagógicas
+        FOREIGN KEY(upload_id) REFERENCES uploads(id) ON DELETE CASCADE
+      );
+    `</span>);
+  }
+}
+
+<span class="cm">// Exportar instancia única (Singleton)</span>
+<span class="kw">const</span> inst = <span class="kw">new</span> <span class="tp">BaseDeDatosWrapper</span>();
+module.exports = inst;</pre>
+  </div>
+
+  <div class="warn-box">
+    <strong>Nota de mantenimiento:</strong> SQLite requiere <code>?</code> como marcador de parámetros. Si se migra de vuelta a PostgreSQL, los repositorios deberán usar <code>$1, $2...</code> y el método <code>query()</code> de este archivo deberá adaptarse.
+  </div>
+
+  <div class="pie"><span>Universidad Pedagógica Nacional · Observatorio UPN</span><span>Pág 4</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ARCHIVO 3: RepositorioPracticasSqlite.js
+══════════════════════════════════════════════════════ -->
+<div class="pagina">
+  <div class="pagina-header">
+    <div><span class="pagina-tag">Archivo 3</span><span class="pagina-breadcrumb">Repositorio de Prácticas</span></div>
+    <span class="pagina-marca">Observatorio UPN</span>
+  </div>
+
+  <div class="archivo-header">
+    <div class="archivo-icono">📚</div>
+    <div>
+      <div class="archivo-nombre">RepositorioPracticasSqlite.js</div>
+      <div class="archivo-ruta">backend/src/practicas/infraestructura/</div>
+    </div>
+    <div class="archivo-badge">Patrón Repository</div>
+  </div>
+
+  <div class="archivo-desc">
+    <strong>Propósito:</strong>
+    Implementa todos los accesos a la tabla <code>practices</code> de la base de datos. Sigue el patrón <em>Repository</em>: el dominio declara una interfaz (<code>RepositorioPracticas</code>) y esta clase la implementa concretamente para SQLite. Incluye búsqueda paginada con filtros múltiples, inserción masiva de registros desde Excel, actualización de coordenadas y eliminación en cascada.
+  </div>
+
+  <div class="code-block">
+    <div class="code-toolbar">
+      <div class="code-dot code-dot-red"></div><div class="code-dot code-dot-yellow"></div><div class="code-dot code-dot-green"></div>
+      <div class="code-lang">JavaScript · SQLite</div>
+    </div>
+    <pre><span class="kw">class</span> <span class="tp">RepositorioPracticasSqlite</span> <span class="kw">extends</span> <span class="tp">RepositorioPracticas</span> {
+  constructor(db) { <span class="kw">super</span>(); <span class="kw">this</span>.db = db; }
+
+  <span class="cm">/**
+   * buscarTodas() — Consulta paginada con filtros dinámicos.
+   * Construye el WHERE dinámicamente para evitar inyección SQL
+   * usando parámetros preparados (prepared statements).
+   *
+   * @param {objeto} consulta — { busqueda, departamento, tipo, formacion,
+   *                              pagina, tamanioPagina, campoOrden, idCarga }
+   */</span>
+  <span class="kw">async</span> <span class="fn">buscarTodas</span>(consulta) {
+    <span class="cm">// Validar campo de orden contra lista blanca (evita SQL injection)</span>
+    <span class="kw">const</span> columna   = COLUMNAS_ORDEN.includes(consulta.campoOrden)
+                      ? consulta.campoOrden : <span class="str">'institucion'</span>;
+    <span class="kw">const</span> direccion = consulta.direccionOrden === <span class="str">'DESC'</span> ? <span class="str">'DESC'</span> : <span class="str">'ASC'</span>;
+
+    <span class="kw">const</span> condiciones = [<span class="str">'1=1'</span>]; <span class="cm">// Base siempre verdadera</span>
+    <span class="kw">const</span> params = [];
+
+    <span class="cm">// Búsqueda de texto libre en múltiples columnas</span>
+    <span class="kw">if</span> (consulta.busqueda) {
+      condiciones.push(<span class="str">`(institucion LIKE ? OR nombre_practica LIKE ? OR
+         municipio LIKE ? OR departamento LIKE ? OR responsables LIKE ?)`</span>);
+      <span class="kw">const</span> term = <span class="str">`%${consulta.busqueda}%`</span>;
+      params.push(term, term, term, term, term);
+    }
+    <span class="cm">// Si no se especifica idCarga, usar siempre la carga más reciente</span>
+    <span class="kw">if</span> (consulta.idCarga) {
+      condiciones.push(<span class="str">'upload_id = ?'</span>); params.push(consulta.idCarga);
+    } <span class="kw">else</span> {
+      condiciones.push(<span class="str">'upload_id = (SELECT MAX(id) FROM uploads)'</span>);
+    }
+
+    <span class="kw">const</span> desplazamiento = (consulta.pagina - <span class="nm">1</span>) * consulta.tamanioPagina;
+    <span class="cm">// Paginación mediante LIMIT + OFFSET</span>
+    <span class="kw">const</span> sql = <span class="str">`SELECT * FROM practices WHERE ${where}
+                  ORDER BY ${columna} ${direccion}
+                  LIMIT ? OFFSET ?`</span>;
+    <span class="kw">const</span> res = <span class="kw">await this</span>.db.query(sql, [...params, consulta.tamanioPagina, desplazamiento]);
+    <span class="kw">const</span> total = <span class="kw">await this</span>.db.query(<span class="str">`SELECT COUNT(*) as n FROM practices WHERE ${where}`</span>, params);
+    <span class="kw">return</span> { registros: res.rows, total: parseInt(total.rows[<span class="nm">0</span>].n, <span class="nm">10</span>) };
+  }
+
+  <span class="cm">/**
+   * insertarMasivo() — Inserta N prácticas en una transacción atómica.
+   * Si falla cualquier INSERT, se hace ROLLBACK completo.
+   */</span>
+  <span class="kw">async</span> <span class="fn">insertarMasivo</span>(idCarga, practicas) {
+    <span class="kw">const</span> client = <span class="kw">await this</span>.db.getClient();
+    <span class="kw">try</span> {
+      <span class="kw">await</span> client.query(<span class="str">'BEGIN'</span>);
+      <span class="kw">for</span> (<span class="kw">const</span> f <span class="kw">of</span> practicas) {
+        <span class="kw">await</span> client.query(sqlInsert, [idCarga, f.fecha, f.institucion, ... ]);
+      }
+      <span class="kw">await</span> client.query(<span class="str">'COMMIT'</span>);
+    } <span class="kw">catch</span> (err) {
+      <span class="kw">await</span> client.query(<span class="str">'ROLLBACK'</span>); <span class="cm">// Garantiza atomicidad</span>
+      <span class="kw">throw</span> err;
+    }
+  }
+
+  <span class="cm">/** Elimina las coordenadas de una práctica del mapa de calor */</span>
+  <span class="kw">async</span> <span class="fn">actualizarCoordenadas</span>(id, lat, lng) {
+    <span class="kw">await this</span>.db.query(<span class="str">'UPDATE practices SET latitud=?, longitud=? WHERE id=?'</span>, [lat, lng, id]);
+  }
+}</pre>
+  </div>
+
+  <div class="ok-box"><strong>Seguridad:</strong> El método <code>buscarTodas()</code> construye el SQL dinámicamente pero siempre usa <em>prepared statements</em> (<code>?</code>) para los valores, nunca concatenación directa de strings. Los nombres de columnas para ORDER BY se validan contra una lista blanca antes de incluirlos en la consulta.</div>
+
+  <div class="pie"><span>Universidad Pedagógica Nacional · Observatorio UPN</span><span>Pág 5</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ARCHIVOS 4-5-6: CARGAS + CHAT CONTROLLER + GROQ
+══════════════════════════════════════════════════════ -->
+<div class="pagina">
+  <div class="pagina-header">
+    <div><span class="pagina-tag">Archivos 4-5-6</span><span class="pagina-breadcrumb">Cargas · Chat Controller · IA Groq</span></div>
+    <span class="pagina-marca">Observatorio UPN</span>
+  </div>
+
+  <!-- ARCHIVO 4 -->
+  <div class="archivo-header" style="border-radius:12px 12px 0 0; margin-bottom:0;">
+    <div class="archivo-icono">📤</div>
+    <div><div class="archivo-nombre">RepositorioCargasSqlite.js</div><div class="archivo-ruta">backend/src/cargas/infraestructura/</div></div>
+    <div class="archivo-badge">Módulo Upload</div>
+  </div>
+  <div class="archivo-desc" style="border-radius:0; margin-bottom:0;">
+    <strong>Propósito:</strong> Gestiona el ciclo de vida de las cargas de archivos Excel. Permite listar el historial, crear un nuevo registro de carga, eliminarlo (lo que por CASCADE borra todas las prácticas asociadas) y marcar una carga como la "publicada" en la vista pública.
+  </div>
+  <div class="code-block">
+    <div class="code-toolbar"><div class="code-dot code-dot-red"></div><div class="code-dot code-dot-yellow"></div><div class="code-dot code-dot-green"></div><div class="code-lang">JavaScript</div></div>
+    <pre><span class="cm">// marcarPublicado: desactiva TODAS las cargas y activa solo la seleccionada.
+// Usa una transacción para garantizar que no haya inconsistencias.</span>
+<span class="kw">async</span> <span class="fn">marcarPublicado</span>(id) {
+  <span class="kw">const</span> client = <span class="kw">await this</span>.db.getClient();
+  <span class="kw">try</span> {
+    <span class="kw">await</span> client.query(<span class="str">'BEGIN'</span>);
+    <span class="kw">await</span> client.query(<span class="str">'UPDATE uploads SET publicado = 0'</span>);    <span class="cm">// Desactiva todas</span>
+    <span class="kw">await</span> client.query(<span class="str">'UPDATE uploads SET publicado = 1 WHERE id = ?'</span>, [id]); <span class="cm">// Activa solo la elegida</span>
+    <span class="kw">await</span> client.query(<span class="str">'COMMIT'</span>);
+  } <span class="kw">catch</span> (e) { <span class="kw">await</span> client.query(<span class="str">'ROLLBACK'</span>); <span class="kw">throw</span> e; }
+}
+
+<span class="cm">// crear: inserta un registro de carga y devuelve su ID (lastInsertRowid)</span>
+<span class="kw">async</span> <span class="fn">crear</span>({ nombre_original, nombre_guardado, cantidad_registros }) {
+  <span class="kw">const</span> res = <span class="kw">await this</span>.db.query(
+    <span class="str">`INSERT INTO uploads (original_name, stored_name, records_count) VALUES (?, ?, ?)`</span>,
+    [nombre_original, nombre_guardado, cantidad_registros]
+  );
+  <span class="kw">return</span> res.insertId; <span class="cm">// ID generado por AUTOINCREMENT</span>
+}</pre>
+  </div>
+
+  <hr class="sep">
+
+  <!-- ARCHIVO 5 -->
+  <div class="archivo-header" style="border-radius:12px 12px 0 0; margin-bottom:0;">
+    <div class="archivo-icono">🤖</div>
+    <div><div class="archivo-nombre">ControladorChat.js</div><div class="archivo-ruta">backend/src/chat/infraestructura/</div></div>
+    <div class="archivo-badge">API Chat · POST /api/chat</div>
+  </div>
+  <div class="archivo-desc" style="border-radius:0; margin-bottom:0;">
+    <strong>Propósito:</strong> Adaptador HTTP del chat con IA. Recibe <code>{ message, history }</code> del frontend, ensambla las dependencias mediante inyección y delega al caso de uso <code>ManejadorEnviarMensaje</code>.
+  </div>
+  <div class="code-block">
+    <div class="code-toolbar"><div class="code-dot code-dot-red"></div><div class="code-dot code-dot-yellow"></div><div class="code-dot code-dot-green"></div><div class="code-lang">JavaScript · Express Router</div></div>
+    <pre><span class="cm">// Inyección de dependencias: todos los objetos se crean aquí</span>
+<span class="kw">const</span> proveedorIA       = <span class="kw">new</span> <span class="tp">ProveedorIAGroq</span>(GROQ_API_KEY);
+<span class="kw">const</span> proveedorContexto = <span class="kw">new</span> <span class="tp">ProveedorContextoObservatorio</span>(manejadorDashboard, repositorioPracticas);
+<span class="kw">const</span> manejador         = <span class="kw">new</span> <span class="tp">ManejadorEnviarMensaje</span>(proveedorIA, proveedorContexto);
+
+enrutador.post(<span class="str">'/'</span>, <span class="kw">async</span> (req, res, next) => {
+  <span class="kw">const</span> { message, history = [] } = req.body;
+  <span class="cm">// Validar que llegue el mensaje; el history es opcional</span>
+  <span class="kw">if</span> (!message || <span class="kw">typeof</span> message !== <span class="str">'string'</span>)
+    <span class="kw">return</span> res.status(<span class="nm">400</span>).json({ error: <span class="str">'El campo "message" es requerido.'</span> });
+
+  <span class="kw">const</span> respuesta = <span class="kw">await</span> manejador.ejecutar(<span class="kw">new</span> <span class="tp">ComandoEnviarMensaje</span>({ mensaje: message, historial: history }));
+  res.json({ reply: respuesta }); <span class="cm">// Respuesta en campo 'reply'</span>
+});</pre>
+  </div>
+
+  <div class="pie"><span>Universidad Pedagógica Nacional · Observatorio UPN</span><span>Pág 6</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ARCHIVOS 7-8: MANEJADOR IA + PROMPT RAG
+══════════════════════════════════════════════════════ -->
+<div class="pagina">
+  <div class="pagina-header">
+    <div><span class="pagina-tag">Archivos 7-8</span><span class="pagina-breadcrumb">Motor de IA · Patrón RAG</span></div>
+    <span class="pagina-marca">Observatorio UPN</span>
+  </div>
+
+  <div class="archivo-header">
+    <div class="archivo-icono">🧠</div>
+    <div><div class="archivo-nombre">ManejadorEnviarMensaje.js</div><div class="archivo-ruta">backend/src/chat/aplicacion/</div></div>
+    <div class="archivo-badge">Caso de Uso · RAG Pattern</div>
+  </div>
+  <div class="archivo-desc">
+    <strong>Propósito — Patrón RAG (Retrieval-Augmented Generation):</strong>
+    Este caso de uso implementa la lógica central del asistente de IA. <em>Antes</em> de enviar el mensaje al modelo Llama 3.3, el sistema consulta y recupera los datos estadísticos reales del observatorio (analíticas del dashboard + muestra de 10 prácticas) y los inyecta en el <code>prompt de sistema</code>. Esto "fundamenta" las respuestas del modelo en datos reales, eliminando las alucinaciones.
+  </div>
+
+  <div class="code-block">
+    <div class="code-toolbar"><div class="code-dot code-dot-red"></div><div class="code-dot code-dot-yellow"></div><div class="code-dot code-dot-green"></div><div class="code-lang">JavaScript · RAG Pattern</div></div>
+    <pre><span class="kw">async</span> <span class="fn">ejecutar</span>(comando) {
+  <span class="cm">// PASO 1 — RETRIEVAL: Recuperar datos reales de la BD antes de llamar a la IA</span>
+  <span class="kw">const</span> analiticas = <span class="kw">await this</span>.proveedorContexto.obtenerAnaliticas();
+  <span class="kw">const</span> muestras   = <span class="kw">await this</span>.proveedorContexto.obtenerMuestraPracticas(<span class="nm">10</span>);
+
+  <span class="cm">// PASO 2 — AUGMENTATION: Construir el prompt enriquecido con datos reales</span>
+  <span class="kw">const</span> promptSistema = <span class="kw">this</span>._construirPromptSistema(analiticas, muestras);
+
+  <span class="cm">// Solo los últimos 6 turnos del historial (evita tokens excesivos)</span>
+  <span class="kw">const</span> historialReciente = comando.historial.slice(-<span class="nm">6</span>);
+
+  <span class="cm">// PASO 3 — GENERATION: Enviar a Groq/Llama con el contexto enriquecido</span>
+  <span class="kw">const</span> mensajes = [
+    { role: <span class="str">'system'</span>, content: promptSistema }, <span class="cm">// Contexto con datos reales</span>
+    ...historialReciente,                          <span class="cm">// Memoria de la conversación</span>
+    { role: <span class="str">'user'</span>, content: comando.mensaje },  <span class="cm">// Pregunta actual del docente</span>
+  ];
+  <span class="kw">return this</span>.proveedorIA.enviarMensaje(mensajes);
+}
+
+<span class="cm">/**
+ * _construirPromptSistema() — Genera el prompt del sistema que inyecta
+ * todos los datos estadísticos reales del observatorio al modelo IA.
+ *
+ * El modelo recibe: total de prácticas, distribución por departamento,
+ * tipos de conflicto, políticas relacionadas, temas de Cátedra de Paz
+ * y una muestra de 6 prácticas reales con sus obstáculos.
+ */</span>
+<span class="fn">_construirPromptSistema</span>(analiticas, muestras) {
+  <span class="kw">const</span> { kpis, porDepartamento, porConflictos } = analiticas;
+  <span class="kw">return</span> <span class="str">`Eres un asistente experto en análisis de prácticas educativas
+sobre paz, memoria y derechos humanos en Colombia.
+Tienes acceso a los datos REALES del Observatorio:
+
+RESUMEN: ${kpis.total} prácticas · ${kpis.departamentos} departamentos
+TOP DEPARTAMENTOS: ${porDepartamento.slice(0,5).map(r=>`${r.label}: ${r.count}`).join(', ')}
+TIPOS DE CONFLICTO: ${porConflictos.slice(0,5).map(r=>r.label).join(', ')}
+
+MUESTRA DE PRÁCTICAS REALES:
+${muestras.slice(0,6).map(p=>`• "${p.nombre_practica}" — ${p.municipio}, ${p.departamento}`).join('\n')}
+
+Responde SIEMPRE en español. Usa los datos para fundamentar las respuestas.`</span>;
+}</pre>
+  </div>
+
+  <div class="info-box">
+    <strong>¿Por qué RAG y no fine-tuning?</strong> El fine-tuning (ajustar el modelo con datos propios) requiere miles de ejemplos, semanas de cómputo y costos elevados. RAG permite que el modelo responda con los datos <em>actuales</em> del observatorio simplemente inyectándolos en cada consulta. Si se cargan 500 nuevas prácticas, la IA las incorpora automáticamente en la siguiente consulta sin ningún re-entrenamiento.
+  </div>
+
+  <div class="pie"><span>Universidad Pedagógica Nacional · Observatorio UPN</span><span>Pág 7</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ARCHIVO 9: App.jsx (Frontend)
+══════════════════════════════════════════════════════ -->
+<div class="pagina">
+  <div class="pagina-header">
+    <div><span class="pagina-tag">Archivo 9</span><span class="pagina-breadcrumb">Frontend React · Enrutador SPA</span></div>
+    <span class="pagina-marca">Observatorio UPN</span>
+  </div>
+
+  <div class="archivo-header">
+    <div class="archivo-icono">⚛️</div>
+    <div><div class="archivo-nombre">App.jsx</div><div class="archivo-ruta">frontend/src/App.jsx</div></div>
+    <div class="archivo-badge">Frontend · React 19 SPA</div>
+  </div>
+  <div class="archivo-desc">
+    <strong>Propósito:</strong>
+    Es el componente raíz de la Single Page Application. Implementa el enrutamiento interno del sistema: en lugar de cargar páginas nuevas, cambia el <em>estado</em> <code>tab</code> para mostrar u ocultar componentes. El sidebar de navegación, el header institucional y el footer se definen aquí. Cada módulo del observatorio es un componente React independiente que se renderiza según el tab activo.
+  </div>
+
+  <div class="code-block">
+    <div class="code-toolbar"><div class="code-dot code-dot-red"></div><div class="code-dot code-dot-yellow"></div><div class="code-dot code-dot-green"></div><div class="code-lang">JSX · React 19</div></div>
+    <pre><span class="cm">// Mapa de navegación: cada entrada define un ítem del sidebar</span>
+<span class="kw">const</span> NAVEGACION = [
+  { id: <span class="str">'dashboard'</span>,  label: <span class="str">'Dashboard'</span>,            icon: &lt;LayoutDashboard /&gt; },
+  { id: <span class="str">'conflictos'</span>, label: <span class="str">'Conflictos y Políticas'</span>, icon: &lt;FileSearch /&gt; },
+  { id: <span class="str">'tabla'</span>,      label: <span class="str">'Tabla de Datos'</span>,         icon: &lt;Table /&gt; },
+  { id: <span class="str">'chat'</span>,       label: <span class="str">'Chat con IA'</span>,           icon: &lt;Bot /&gt; },
+  { id: <span class="str">'upload'</span>,     label: <span class="str">'Cargar Archivo'</span>,        icon: &lt;UploadCloud /&gt; },
+  { id: <span class="str">'mapa'</span>,       label: <span class="str">'Mapa de Calor'</span>,         icon: &lt;MapIcon /&gt; },
+  { id: <span class="str">'historico'</span>,  label: <span class="str">'Histórico'</span>,             icon: &lt;History /&gt; },
+];
+
+<span class="cm">/**
+ * renderPagina() — Switch de componentes por tab activo.
+ * La prop 'key={refresco}' fuerza re-montado del componente cuando
+ * se realiza una nueva carga de datos, actualizando el dashboard.
+ */</span>
+<span class="kw">const</span> renderPagina = () => {
+  <span class="kw">switch</span> (tab) {
+    <span class="kw">case</span> <span class="str">'dashboard'</span>:  <span class="kw">return</span> &lt;PaginaDashboard key={refresco} onTotalChange={setTotalPracticas} /&gt;;
+    <span class="kw">case</span> <span class="str">'chat'</span>:       <span class="kw">return</span> &lt;PaginaChat /&gt;;   <span class="cm">// Chat con IA</span>
+    <span class="kw">case</span> <span class="str">'upload'</span>:    <span class="kw">return</span> &lt;PaginaCarga onCargaExitosa={refrescarDatos} /&gt;;
+    <span class="kw">case</span> <span class="str">'mapa'</span>:      <span class="kw">return</span> &lt;PaginaMapa key={refresco} /&gt;;  <span class="cm">// Google Maps API</span>
+    <span class="kw">case</span> <span class="str">'historico'</span>: <span class="kw">return</span> &lt;PaginaHistorico onVerEnTabla={verEnTabla} /&gt;;
+    <span class="kw">default</span>:          <span class="kw">return null</span>;
+  }
+};
+
+<span class="cm">// Callback que activa la sincronización entre Histórico → Tabla de Datos</span>
+<span class="kw">const</span> verEnTabla = <span class="fn">useCallback</span>((idCarga) => {
+  setIdCargaFiltro(idCarga); <span class="cm">// Filtra la tabla por la carga seleccionada</span>
+  setTab(<span class="str">'tabla'</span>);           <span class="cm">// Navega automáticamente a la tabla</span>
+}, []);</pre>
+  </div>
+
+  <div class="explain-grid">
+    <div class="explain-card">
+      <div class="explain-card-title">🔄 Estado centralizado en App</div>
+      <div class="explain-card-text">El componente App mantiene el estado global: qué tab está activo, el total de prácticas para el header y el ID de carga para el filtro de la tabla. Los componentes hijos reciben todo por props, lo que facilita el flujo de datos unidireccional de React.</div>
+    </div>
+    <div class="explain-card">
+      <div class="explain-card-title">⚡ key={refresco} — Patrón de refresco</div>
+      <div class="explain-card-text">Cuando el usuario sube un nuevo archivo Excel, el callback <code>refrescarDatos</code> incrementa el contador <code>refresco</code>. Al pasar ese valor como <code>key</code> al Dashboard, React desmonta y re-monta el componente, forzando una nueva llamada a la API para actualizar los indicadores.</div>
+    </div>
+  </div>
+
+  <div class="archivo-header" style="border-radius:12px 12px 0 0; margin-bottom:0; margin-top:20px;">
+    <div class="archivo-icono">🌐</div>
+    <div><div class="archivo-nombre">ClienteHttp.js</div><div class="archivo-ruta">frontend/src/compartido/infraestructura/</div></div>
+    <div class="archivo-badge">Archivo 10 · HTTP Client</div>
+  </div>
+  <div class="code-block">
+    <div class="code-toolbar"><div class="code-dot code-dot-red"></div><div class="code-dot code-dot-yellow"></div><div class="code-dot code-dot-green"></div><div class="code-lang">JavaScript · Fetch API</div></div>
+    <pre><span class="cm">// La URL base se toma de la variable de entorno VITE_API_URL.
+// En Netlify apunta al backend en Railway. En local usa localhost:3000.</span>
+<span class="kw">const</span> BASE = import.meta.env.VITE_API_URL || <span class="str">'/api'</span>;
+
+<span class="cm">// Wrapper centralizado: todos los fetch del frontend pasan por aquí.
+// Si el servidor retorna un error HTTP, lanza una excepción con el mensaje del servidor.</span>
+<span class="kw">async function</span> <span class="fn">solicitud</span>(ruta, opciones = {}) {
+  <span class="kw">const</span> respuesta = <span class="kw">await</span> fetch(<span class="str">`${BASE}${ruta}`</span>, opciones);
+  <span class="kw">if</span> (!respuesta.ok) {
+    <span class="kw">const</span> cuerpo = <span class="kw">await</span> respuesta.json().<span class="fn">catch</span>(() => ({}));
+    <span class="kw">throw new</span> Error(cuerpo.error || <span class="str">`Error ${respuesta.status}`</span>);
+  }
+  <span class="kw">return</span> respuesta.json();
+}
+<span class="kw">export const</span> enviarArchivo = (ruta, archivo) => {
+  <span class="kw">const</span> formData = <span class="kw">new</span> FormData();
+  formData.append(<span class="str">'file'</span>, archivo);
+  <span class="cm">// Nota: NO poner Content-Type manual; el browser lo añade con el boundary correcto</span>
+  <span class="kw">return</span> solicitud(ruta, { method: <span class="str">'POST'</span>, body: formData });
+};</pre>
+  </div>
+
+  <div style="margin-top: 28px; text-align:center; padding:18px; background: linear-gradient(135deg, var(--blue), var(--blue-mid)); border-radius:12px; color:white;">
+    <div style="font-size:11pt; font-weight:700;">Universidad Pedagógica Nacional · Observatorio de Prácticas Educativas</div>
+    <div style="font-size:9pt; opacity:0.75; margin-top:4px;">Paz, Memoria y Derechos Humanos · Colombia · Código Fuente Documentado · 2026</div>
+  </div>
+
+  <div class="pie"><span>Universidad Pedagógica Nacional · Observatorio UPN</span><span>Pág 8 — Fin del documento</span></div>
+</div>
+
+</body>
+</html>
