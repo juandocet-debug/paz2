@@ -18,8 +18,9 @@ enrutador.post('/access-audit', async (req, res, next) => {
 
   try {
     const accesos = await auditoria.listar(500);
+    const sesiones = await auditoria.listarSesiones(200);
     res.set('Cache-Control', 'no-store');
-    res.json({ accesos });
+    res.json({ accesos, sesiones });
   } catch (error) {
     next(error);
   }

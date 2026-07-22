@@ -6,6 +6,7 @@
  */
 const express = require('express');
 const jwt     = require('jsonwebtoken');
+const crypto  = require('crypto');
 const auditoria = require('./RepositorioAuditoria');
 
 const enrutador   = express.Router();
@@ -45,7 +46,41 @@ enrutador.post('/login', async (req, res) => {
     { expiresIn: '8h' },
   );
 
-  res.json({ token, usuario, rol: 'admin' });
+  const sesionId = crypto.randomUUID();
+  await auditoria.iniciarSesion({
+    id: sesionId,
+    usuario: String(usuario).slice(0, 120),
+    ip: String(ip).slice(0, 120),
+    navegador,
+  }).catch((error) => {
+    console.error('No fue posible iniciar la auditoría de sesión:', error.message);
+  });
+
+  res.json({ token, usuario, rol: 'admin', sesionId });
+});
+
+/* ── POST /api/auth/activity ── */
+enrutador.post('/activity', (req, res) => {
+  const cabecera = req.headers.authorization || '';
+  const token = cabecera.startsWith('Bearer ') ? cabecera.slice(7) : null;
+  if (!token) return res.status(401).json({ error: 'No autorizado.' });
+
+  try {
+    jwt.verify(token, JWT_SECRET);
+  } catch {
+    return res.status(401).json({ error: 'No autorizado.' });
+  }
+
+  const sesionId = String(req.body?.sesionId || '').slice(0, 80);
+  const seccion = String(req.body?.seccion || 'Aplicación').slice(0, 120);
+  const tipoPermitido = ['navegacion', 'inicio', 'latido', 'cierre'];
+  const tipo = tipoPermitido.includes(req.body?.tipo) ? req.body.tipo : 'navegacion';
+  if (!sesionId) return res.status(400).json({ error: 'Sesión requerida.' });
+
+  void auditoria.registrarActividad({ sesionId, seccion, tipo }).catch((error) => {
+    console.error('No fue posible registrar actividad:', error.message);
+  });
+  res.status(202).json({ registrado: true });
 });
 
 /* ── GET /api/auth/validar ── */
