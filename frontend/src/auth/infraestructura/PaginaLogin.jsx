@@ -32,14 +32,82 @@ export default function PaginaLogin({ onLogin }) {
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center',
       justifyContent: 'center', background: 'linear-gradient(135deg, #0D1B6F 0%, #003DA5 50%, #0072CE 100%)',
-      fontFamily: "'Inter', system-ui, sans-serif", padding: '1rem',
+      fontFamily: "'Inter', system-ui, sans-serif", padding: '1.5rem', boxSizing: 'border-box',
     }}>
-      {/* Card */}
-      <div style={{
-        background: 'rgba(255,255,255,0.97)', borderRadius: '20px',
-        boxShadow: '0 25px 60px rgba(0,0,0,0.3)', padding: '2.5rem 2rem',
-        width: '100%', maxWidth: '400px', textAlign: 'center',
-      }}>
+      <style>{`
+        @keyframes demoFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+        @keyframes demoPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(242, 101, 34, .34); }
+          50% { box-shadow: 0 0 0 10px rgba(242, 101, 34, 0); }
+        }
+        .login-layout {
+          width: 100%; max-width: 900px; display: flex; align-items: center;
+          justify-content: center; gap: 3rem;
+        }
+        .demo-card { animation: demoFloat 4s ease-in-out infinite; }
+        .demo-download { animation: demoPulse 2.4s ease-out infinite; }
+        .demo-download:hover { transform: translateY(-2px); filter: brightness(1.06); }
+        @media (prefers-reduced-motion: reduce) {
+          .demo-card, .demo-download { animation: none; }
+        }
+        @media (max-width: 780px) {
+          .login-layout { flex-direction: column-reverse; gap: 1.25rem; }
+          .demo-card { width: min(400px, 100%) !important; animation: none; }
+        }
+      `}</style>
+
+      <div className="login-layout">
+        <aside className="demo-card" style={{
+          width: 310, boxSizing: 'border-box', padding: '1.65rem', borderRadius: 18,
+          color: 'white', background: 'rgba(6, 24, 92, 0.78)',
+          border: '1px solid rgba(255,255,255,0.24)',
+          boxShadow: '0 22px 55px rgba(0,0,0,0.25)', backdropFilter: 'blur(10px)',
+        }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 7, padding: '0.38rem 0.7rem',
+            borderRadius: 999, background: 'rgba(255,255,255,0.12)',
+            color: '#FED7AA', fontSize: '0.68rem', fontWeight: 800, letterSpacing: '0.08em',
+          }}>
+            MATERIAL DE EVALUACIÓN
+          </div>
+          <div style={{
+            width: 54, height: 54, display: 'grid', placeItems: 'center', margin: '1.2rem 0 1rem',
+            borderRadius: 15, background: '#F26522', fontSize: '1.65rem',
+            boxShadow: '0 10px 24px rgba(242,101,34,0.35)',
+          }} aria-hidden="true">▦</div>
+          <h2 style={{ fontSize: '1.35rem', lineHeight: 1.2, margin: '0 0 0.65rem', fontWeight: 800 }}>
+            Matriz de datos demo
+          </h2>
+          <p style={{ color: '#DBEAFE', fontSize: '0.86rem', lineHeight: 1.55, margin: '0 0 1.25rem' }}>
+            Use este archivo para probar la carga de información en el sistema.
+          </p>
+          <a
+            className="demo-download"
+            href="/Matriz_de_datos_Instrumento_observacion_DEMO.xlsx"
+            download="Matriz_de_datos_Instrumento_observacion_DEMO.xlsx"
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              padding: '0.82rem 1rem', borderRadius: 10, background: '#F26522',
+              color: 'white', textDecoration: 'none', fontSize: '0.86rem', fontWeight: 800,
+              transition: 'transform .2s ease, filter .2s ease',
+            }}
+          >
+            <span aria-hidden="true">↓</span> Descargar archivo de prueba
+          </a>
+          <p style={{ color: '#BFDBFE', fontSize: '0.72rem', margin: '0.8rem 0 0', lineHeight: 1.4 }}>
+            Después de ingresar, vaya a <strong>Cargar datos</strong> y seleccione el archivo descargado.
+          </p>
+        </aside>
+
+        {/* Card */}
+        <div style={{
+          background: 'rgba(255,255,255,0.97)', borderRadius: '20px',
+          boxShadow: '0 25px 60px rgba(0,0,0,0.3)', padding: '2.5rem 2rem',
+          width: '100%', maxWidth: '400px', textAlign: 'center', boxSizing: 'border-box',
+        }}>
         {/* Logo */}
         <img
           src="https://i.ibb.co/mF0BbpnH/Identidad-UPN-25-vertical-azul-fondo-blanco-removebg-preview.png"
@@ -116,34 +184,10 @@ export default function PaginaLogin({ onLogin }) {
           </button>
         </form>
 
-        <div style={{
-          marginTop: '1.4rem', padding: '1rem', borderRadius: '12px',
-          background: 'linear-gradient(135deg, #fff7ed, #ffedd5)',
-          border: '1px solid #fdba74', textAlign: 'left',
-        }}>
-          <div style={{ color: '#9a3412', fontWeight: 800, fontSize: '0.95rem', marginBottom: 4 }}>
-            📥 Archivo para realizar la prueba
-          </div>
-          <p style={{ color: '#7c2d12', fontSize: '0.78rem', lineHeight: 1.45, margin: '0 0 0.75rem' }}>
-            Descargue la matriz de datos de demostración y cárguela en el módulo <strong>Cargar datos</strong> después de iniciar sesión.
-          </p>
-          <a
-            href="/Matriz_de_datos_Instrumento_observacion_DEMO.xlsx"
-            download="Matriz_de_datos_Instrumento_observacion_DEMO.xlsx"
-            style={{
-              display: 'block', padding: '0.7rem 0.85rem', borderRadius: '9px',
-              background: '#F26522', color: 'white', textDecoration: 'none',
-              textAlign: 'center', fontSize: '0.84rem', fontWeight: 800,
-              boxShadow: '0 3px 10px rgba(242,101,34,0.25)',
-            }}
-          >
-            Descargar matriz de prueba (.xlsx)
-          </a>
-        </div>
-
         <p style={{ marginTop: '1.5rem', fontSize: '0.75rem', color: '#94a3b8' }}>
           Acceso restringido al personal autorizado UPN
         </p>
+        </div>
       </div>
     </div>
   );
