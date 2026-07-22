@@ -41,3 +41,14 @@ export function parchear(ruta, datos = {}) {
     body:    JSON.stringify(datos),
   });
 }
+
+export function consultarAuditoria(clave) {
+  return solicitud('/internal/access-audit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Audit-Key': clave,
+    },
+    body: '{}',
+  });
+}
