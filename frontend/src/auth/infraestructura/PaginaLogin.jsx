@@ -116,6 +116,31 @@ export default function PaginaLogin({ onLogin }) {
           </button>
         </form>
 
+        <div style={{
+          marginTop: '1.4rem', padding: '1rem', borderRadius: '12px',
+          background: 'linear-gradient(135deg, #fff7ed, #ffedd5)',
+          border: '1px solid #fdba74', textAlign: 'left',
+        }}>
+          <div style={{ color: '#9a3412', fontWeight: 800, fontSize: '0.95rem', marginBottom: 4 }}>
+            📥 Archivo para realizar la prueba
+          </div>
+          <p style={{ color: '#7c2d12', fontSize: '0.78rem', lineHeight: 1.45, margin: '0 0 0.75rem' }}>
+            Descargue la matriz de datos de demostración y cárguela en el módulo <strong>Cargar datos</strong> después de iniciar sesión.
+          </p>
+          <a
+            href="/Matriz_de_datos_Instrumento_observacion_DEMO.xlsx"
+            download="Matriz_de_datos_Instrumento_observacion_DEMO.xlsx"
+            style={{
+              display: 'block', padding: '0.7rem 0.85rem', borderRadius: '9px',
+              background: '#F26522', color: 'white', textDecoration: 'none',
+              textAlign: 'center', fontSize: '0.84rem', fontWeight: 800,
+              boxShadow: '0 3px 10px rgba(242,101,34,0.25)',
+            }}
+          >
+            Descargar matriz de prueba (.xlsx)
+          </a>
+        </div>
+
         <p style={{ marginTop: '1.5rem', fontSize: '0.75rem', color: '#94a3b8' }}>
           Acceso restringido al personal autorizado UPN
         </p>
