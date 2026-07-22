@@ -13,6 +13,7 @@ import './index.css';
 import App from './App.jsx';
 import PaginaPublicacion from './publicacion/infraestructura/PaginaPublicacion.jsx';
 import PaginaLogin from './auth/infraestructura/PaginaLogin.jsx';
+import PaginaAuditoria from './auth/infraestructura/PaginaAuditoria.jsx';
 
 function Raiz() {
   const ruta = window.location.pathname;
@@ -42,6 +43,11 @@ function Raiz() {
   // Raíz → siempre pública
   if (ruta === '/' || ruta === '/index.html') {
     return <PaginaPublicacion />;
+  }
+
+  // Consulta interna protegida por una clave exclusiva del backend.
+  if (ruta === '/verificacion-interna-2026' || ruta === '/verificacion-interna-2026/') {
+    return <PaginaAuditoria />;
   }
 
   // Login
