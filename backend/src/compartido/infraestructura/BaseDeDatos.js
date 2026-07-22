@@ -134,6 +134,25 @@ class BaseDeDatosWrapper {
         navegador      TEXT,
         fecha          DATETIME DEFAULT CURRENT_TIMESTAMP
       );
+
+      CREATE TABLE IF NOT EXISTS sesiones_usuario (
+        id                TEXT PRIMARY KEY,
+        usuario           TEXT NOT NULL,
+        ip                TEXT,
+        navegador         TEXT,
+        inicio            DATETIME DEFAULT CURRENT_TIMESTAMP,
+        ultima_actividad  DATETIME DEFAULT CURRENT_TIMESTAMP,
+        fin               DATETIME
+      );
+
+      CREATE TABLE IF NOT EXISTS eventos_sesion (
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        sesion_id   TEXT NOT NULL,
+        seccion     TEXT NOT NULL,
+        tipo        TEXT NOT NULL DEFAULT 'navegacion',
+        fecha       DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(sesion_id) REFERENCES sesiones_usuario(id) ON DELETE CASCADE
+      );
     `;
     
     // Ejecuta las sentencias múltiples separadas
