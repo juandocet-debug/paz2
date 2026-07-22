@@ -52,3 +52,18 @@ export function consultarAuditoria(clave) {
     body: '{}',
   });
 }
+
+export function registrarActividadSesion(seccion, tipo = 'navegacion', keepalive = false) {
+  const token = localStorage.getItem('observatorio_token');
+  const sesionId = localStorage.getItem('observatorio_sesion');
+  if (!token || !sesionId) return Promise.resolve();
+  return fetch(`${BASE}/auth/activity`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ sesionId, seccion, tipo }),
+    keepalive,
+  }).catch(() => undefined);
+}
