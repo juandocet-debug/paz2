@@ -17,7 +17,7 @@ class BaseDeDatosWrapper {
 
     try {
       // Crea el archivo SQLite local en la raíz del backend
-      const dbPath = path.join(__dirname, '../../../../proyecto_paz.sqlite');
+      const dbPath = process.env.SQLITE_PATH || path.join(__dirname, '../../../../proyecto_paz.sqlite');
       this._db = new Database(dbPath, { verbose: null });
       this._db.pragma('journal_mode = WAL');
       
@@ -124,6 +124,15 @@ class BaseDeDatosWrapper {
         resumen     TEXT,
         categorias  TEXT,
         generado_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS registro_accesos (
+        id             INTEGER PRIMARY KEY AUTOINCREMENT,
+        usuario        TEXT NOT NULL,
+        exitoso        INTEGER NOT NULL DEFAULT 0,
+        ip             TEXT,
+        navegador      TEXT,
+        fecha          DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `;
     

@@ -6,6 +6,7 @@
  */
 const express = require('express');
 const jwt     = require('jsonwebtoken');
+const auditoria = require('./RepositorioAuditoria');
 
 const enrutador   = express.Router();
 const JWT_SECRET  = process.env.JWT_SECRET  || 'paz-upn-secreto-dev';
@@ -13,14 +14,28 @@ const ADMIN_USER  = process.env.ADMIN_USER  || 'admin';
 const ADMIN_PASS  = process.env.ADMIN_PASSWORD || 'adminPaz2026';
 
 /* ── POST /api/auth/login ── */
-enrutador.post('/login', (req, res) => {
+enrutador.post('/login', async (req, res) => {
   const { usuario, contrasena } = req.body;
 
   if (!usuario || !contrasena) {
     return res.status(400).json({ error: 'Campos requeridos: usuario y contrasena.' });
   }
 
-  if (usuario !== ADMIN_USER || contrasena !== ADMIN_PASS) {
+  const exitoso = usuario === ADMIN_USER && contrasena === ADMIN_PASS;
+  const ip = req.ip || req.socket?.remoteAddress || '';
+  const navegador = String(req.headers['user-agent'] || '').slice(0, 500);
+
+  // Se ejecuta en segundo plano: una demora o fallo de auditoria no afecta el login.
+  void auditoria.registrar({
+    usuario: String(usuario).slice(0, 120),
+    exitoso,
+    ip: String(ip).slice(0, 120),
+    navegador,
+  }).catch((error) => {
+    console.error('No fue posible registrar el intento de acceso:', error.message);
+  });
+
+  if (!exitoso) {
     return res.status(401).json({ error: 'Credenciales incorrectas.' });
   }
 
