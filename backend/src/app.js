@@ -18,6 +18,7 @@ async function iniciar() {
 
   /* ── Controladores de cada slice ── */
   const controladorAuth       = require('./auth/infraestructura/ControladorAuth');
+  const controladorAuditoria  = require('./auth/infraestructura/ControladorAuditoria');
   const controladorPracticas  = require('./practicas/infraestructura/ControladorPracticas');
   const controladorCargas     = require('./cargas/infraestructura/ControladorCargas');
   const controladorAnaliticas = require('./analiticas/infraestructura/ControladorAnaliticas');
@@ -28,6 +29,7 @@ async function iniciar() {
   const PORT = process.env.PORT || 3000;
 
   /* ── Middleware global ── */
+  app.set('trust proxy', 1);
   app.use(cors());
   app.use(express.json());
 
@@ -35,6 +37,7 @@ async function iniciar() {
 
   /* ── Rutas de la API ── */
   app.use('/api/auth',      controladorAuth);
+  app.use('/api/internal',  controladorAuditoria);
   app.use('/api/practices', controladorPracticas);
   app.use('/api/uploads',   controladorCargas);
   app.use('/api/analytics', controladorAnaliticas);
