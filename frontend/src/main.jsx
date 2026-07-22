@@ -14,6 +14,7 @@ import App from './App.jsx';
 import PaginaPublicacion from './publicacion/infraestructura/PaginaPublicacion.jsx';
 import PaginaLogin from './auth/infraestructura/PaginaLogin.jsx';
 import PaginaAuditoria from './auth/infraestructura/PaginaAuditoria.jsx';
+import { registrarActividadSesion } from './compartido/infraestructura/ClienteHttp.js';
 
 function Raiz() {
   const ruta = window.location.pathname;
@@ -32,8 +33,10 @@ function Raiz() {
   };
 
   const onLogout = () => {
+    void registrarActividadSesion('Aplicación', 'cierre', true);
     localStorage.removeItem('observatorio_token');
     localStorage.removeItem('observatorio_usuario');
+    localStorage.removeItem('observatorio_sesion');
     setToken(null);
     window.location.href = '/';
   };

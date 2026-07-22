@@ -1,7 +1,7 @@
 /**
  * App.jsx — Layout principal con sidebar de navegación.
  */
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import PaginaDashboard   from './dashboard/infraestructura/PaginaDashboard.jsx';
 import PaginaConflictos  from './dashboard/infraestructura/PaginaConflictos.jsx';
 import PaginaPracticas   from './practicas/infraestructura/PaginaPracticas.jsx';
@@ -10,6 +10,7 @@ import PaginaCarga       from './cargas/infraestructura/PaginaCarga.jsx';
 import PaginaHistorico   from './cargas/infraestructura/PaginaHistorico.jsx';
 import PaginaMapa        from './mapa/infraestructura/PaginaMapa.jsx';
 import { LayoutDashboard, FileSearch, Table, Bot, UploadCloud, Map as MapIcon, History, Globe, LogOut } from 'lucide-react';
+import { registrarActividadSesion } from './compartido/infraestructura/ClienteHttp.js';
 
 const NAVEGACION = [
   { id: 'dashboard',   label: 'Dashboard',             icon: <LayoutDashboard size={20} /> },
@@ -28,6 +29,27 @@ export default function App({ onLogout }) {
   const [refresco, setRefresco] = useState(0);
 
   const refrescarDatos = useCallback(() => setRefresco(n => n + 1), []);
+
+  useEffect(() => {
+    const nombre = NAVEGACION.find((item) => item.id === tab)?.label || tab;
+    void registrarActividadSesion(nombre, tab === 'dashboard' ? 'inicio' : 'navegacion');
+  }, [tab]);
+
+  useEffect(() => {
+    const latido = setInterval(() => {
+      const nombre = NAVEGACION.find((item) => item.id === tab)?.label || tab;
+      void registrarActividadSesion(nombre, 'latido');
+    }, 30000);
+    const cerrar = () => {
+      const nombre = NAVEGACION.find((item) => item.id === tab)?.label || tab;
+      void registrarActividadSesion(nombre, 'cierre', true);
+    };
+    window.addEventListener('pagehide', cerrar);
+    return () => {
+      clearInterval(latido);
+      window.removeEventListener('pagehide', cerrar);
+    };
+  }, [tab]);
 
   const verEnTabla = useCallback((idCarga) => {
     setIdCargaFiltro(idCarga);
