@@ -20,6 +20,7 @@ export default function PaginaLogin({ onLogin }) {
       const data = await enviar('/auth/login', { usuario, contrasena });
       localStorage.setItem('observatorio_token', data.token);
       localStorage.setItem('observatorio_usuario', data.usuario);
+      localStorage.setItem('observatorio_sesion', data.sesionId || '');
       onLogin(data.token);
     } catch (err) {
       setError(err.message || 'Credenciales incorrectas. Inténtalo de nuevo.');
