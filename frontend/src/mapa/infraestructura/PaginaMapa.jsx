@@ -246,7 +246,14 @@ export default function PaginaMapa() {
 
       {error && (
         <div className="upload-status error" style={{ marginBottom: 16 }}>
-          ⚠️ {error}
+          <div>
+            <strong>⚠️ No fue posible verificar el servicio del mapa.</strong>
+            <div style={{ marginTop: 4 }}>{error}</div>
+            <div style={{ marginTop: 6 }}>
+              Si el problema continúa, contacte al desarrollador en{' '}
+              <a href="mailto:jdramirezca@upn.edu.co">jdramirezca@upn.edu.co</a>.
+            </div>
+          </div>
         </div>
       )}
 
@@ -266,12 +273,12 @@ export default function PaginaMapa() {
 
       {puntos.length === 0 && !cargando && !error && (
         <div className="info-callout" style={{ marginTop: 16 }}>
-          <div className="info-callout-icon">ℹ️</div>
+          <div className="info-callout-icon">✅</div>
           <div>
-            <h4>Sin datos georeferenciados</h4>
+            <h4>Sistema listo para cargar datos</h4>
             <p>
-              Las prácticas se geocodifican automáticamente al cargar un archivo Excel.
-              Asegúrate de tener configurada la variable <strong>GOOGLE_MAPS_API_KEY</strong> en el backend.
+              El mapa y la conexión con el sistema están funcionando correctamente. Aún no hay prácticas
+              georreferenciadas; cargue un archivo Excel en el módulo <strong>Cargar datos</strong> para comenzar.
             </p>
           </div>
         </div>
